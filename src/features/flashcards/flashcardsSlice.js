@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const initialState = [];
+const initialState = {
+	flashcards: [],
+	status: "idle",
+	error: null,
+};
 
 export const fetchFlashcards = createAsyncThunk(
 	"flashcards/fetchFlashcards",
@@ -17,8 +21,16 @@ const flashcardsSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: {
+		[fetchFlashcards.pending]: (state) => {
+			state.status = "loading";
+		},
 		[fetchFlashcards.fulfilled]: (state, action) => {
-			return action.payload;
+			state.status = "succeeded";
+			state.flashcards = action.payload;
+		},
+		[fetchFlashcards.rejected]: (state, action) => {
+			state.status = "failed";
+			state.error = action.error.message;
 		},
 	},
 });
