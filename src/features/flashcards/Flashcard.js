@@ -23,6 +23,15 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexDirection: "column",
 	},
+	cardActions: {
+		display: "flex",
+		[theme.breakpoints.down("sm")]: {
+			flexDirection: "column",
+		},
+		[theme.breakpoints.up("md")]: {
+			flexDirection: "row",
+		},
+	},
 	submit: {
 		marginTop: theme.spacing(2),
 	},
@@ -83,7 +92,7 @@ export const Flashcard = () => {
 				<Button onClick={handleOpen}>Show More</Button>
 				<InfoModal open={open} onClose={handleClose} flashcard={flashcard} />
 			</CardContent>
-			<CardActions>
+			<CardActions className={classes.cardActions}>
 				<SelectMenu answerType={answerType} setAnswerType={setAnswerType} />
 				<TextField
 					id="answer"
