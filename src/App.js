@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Layout } from "./features/layout/Layout";
 import { Flashcard } from "./features/flashcards/Flashcard";
 import "./App.css";
 
@@ -17,7 +18,11 @@ const App = () => {
 		content = <div>{error}</div>;
 	}
 
-	return <div className="App">{content}</div>;
+	return (
+		<div className="App">
+			<Layout>{content}</Layout>
+		</div>
+	);
 };
 
 export default App;
