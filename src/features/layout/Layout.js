@@ -5,7 +5,7 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 
 const useStyles = makeStyles((theme) => ({
-	main: {
+	container: {
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
@@ -18,7 +18,7 @@ export const Layout = ({ children }) => {
 	return (
 		<>
 			<Header />
-			<Container className={classes.main} maxWidth="xs">
+			<Container className={classes.container} maxWidth="xs">
 				<main>{children}</main>
 				<Footer />
 			</Container>

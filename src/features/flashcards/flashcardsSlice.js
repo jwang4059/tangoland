@@ -24,6 +24,9 @@ const flashcardsSlice = createSlice({
 		increment: (state) => {
 			state.counter += 1;
 		},
+		reset: (state) => {
+			state.counter = 0;
+		},
 	},
 	extraReducers: {
 		[fetchFlashcards.pending]: (state) => {
@@ -40,6 +43,6 @@ const flashcardsSlice = createSlice({
 	},
 });
 
-export const { increment } = flashcardsSlice.actions;
+export const { increment, reset } = flashcardsSlice.actions;
 
 export default flashcardsSlice.reducer;
