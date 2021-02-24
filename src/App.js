@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Layout } from "./features/layout/Layout";
 import { Flashcard } from "./features/flashcards/Flashcard";
 import { Loading } from "./components/Loading";
+import { Error } from "./components/Error";
 import { ResetButton } from "./features/flashcards/ResetButton";
 import "./App.css";
 
@@ -22,7 +23,7 @@ const App = () => {
 			</>
 		);
 	} else if (flashcardsStatus === "failed") {
-		content = <div>{error}</div>;
+		content = <Error message={error} />;
 	}
 
 	return (
