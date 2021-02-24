@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Layout } from "./features/layout/Layout";
 import { Flashcard } from "./features/flashcards/Flashcard";
+import { Loading } from "./components/Loading";
 import { ResetButton } from "./features/flashcards/ResetButton";
 import "./App.css";
 
@@ -12,7 +13,7 @@ const App = () => {
 	let content;
 
 	if (flashcardsStatus === "loading") {
-		content = <div>Loading...</div>;
+		content = <Loading />;
 	} else if (flashcardsStatus === "succeeded") {
 		content = (
 			<>
