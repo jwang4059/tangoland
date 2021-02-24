@@ -7,9 +7,8 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		width: 300,
 		backgroundColor: theme.palette.background.paper,
-		border: "2px solid #000",
 		boxShadow: theme.shadows[5],
-		padding: theme.spacing(2, 4, 3),
+		padding: theme.spacing(2),
 		position: "absolute",
 		top: "30%",
 		left: "50%",
@@ -34,6 +33,10 @@ export const InfoModal = ({ open, onClose, flashcard }) => {
 	return (
 		<Modal open={open} onClose={onClose}>
 			<div className={classes.root}>
+				<Typography gutterBottom>
+					<strong>More Info</strong>
+				</Typography>
+				<hr />
 				<Typography gutterBottom>
 					<strong>Expression:</strong> {expression}
 				</Typography>
