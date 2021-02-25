@@ -10,18 +10,19 @@ import Button from "@material-ui/core/Button";
 import { Question } from "./Question";
 import { InfoModal } from "./InfoModal";
 import { SelectMenu } from "./SelectMenu";
-import { increment } from "./flashcardsSlice";
+import { incrementCounter, incrementScore } from "./flashcardsSlice";
 
 const useStyles = makeStyles((theme) => ({
 	card: {
 		minWidth: 250,
 		maxWidth: 500,
 		padding: theme.spacing(2),
-		marginBottom: theme.spacing(2),
+		margin: theme.spacing(4, 0),
 	},
 	cardContent: {
 		display: "flex",
 		flexDirection: "column",
+		margin: theme.spacing(4, 0),
 	},
 	cardActions: {
 		display: "flex",
@@ -48,6 +49,7 @@ export const Flashcard = () => {
 	const [answerType, setAnswerType] = useState("romaji");
 	const [answer, setAnswer] = useState("");
 	const [error, setError] = useState(false);
+	const [mistake, setMistake] = useState(false);
 
 	const flashcard = flashcards[counter];
 
@@ -66,10 +68,16 @@ export const Flashcard = () => {
 
 	const handleAnswerValidation = () => {
 		if (flashcard[answerType].includes(answer)) {
+			if (!mistake) {
+				dispatch(incrementScore());
+			} else {
+				setMistake(false);
+			}
 			setError(false);
-			dispatch(increment());
+			dispatch(incrementCounter());
 			setAnswer("");
 		} else {
+			setMistake(true);
 			setError(true);
 		}
 	};

@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
 	data: [],
 	counter: 0,
+	score: 0,
 	status: "idle",
 	error: null,
 };
@@ -21,11 +22,15 @@ const flashcardsSlice = createSlice({
 	name: "flashcards",
 	initialState,
 	reducers: {
-		increment: (state) => {
+		incrementCounter: (state) => {
 			state.counter += 1;
+		},
+		incrementScore: (state) => {
+			state.score += 1;
 		},
 		reset: (state) => {
 			state.counter = 0;
+			state.score = 0;
 		},
 	},
 	extraReducers: {
@@ -43,6 +48,10 @@ const flashcardsSlice = createSlice({
 	},
 });
 
-export const { increment, reset } = flashcardsSlice.actions;
+export const {
+	incrementCounter,
+	incrementScore,
+	reset,
+} = flashcardsSlice.actions;
 
 export default flashcardsSlice.reducer;
