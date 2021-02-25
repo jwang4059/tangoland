@@ -6,7 +6,6 @@ import { Error } from "./components/Error";
 import { Flashcard } from "./features/flashcards/Flashcard";
 import { Score } from "./features/flashcards/Score";
 import { ResetButton } from "./features/flashcards/ResetButton";
-import "./App.css";
 
 const App = () => {
 	const flashcardsStatus = useSelector((state) => state.flashcards.status);
@@ -28,11 +27,7 @@ const App = () => {
 		content = <Error message={error} />;
 	}
 
-	return (
-		<div className="App">
-			<Layout>{content}</Layout>
-		</div>
-	);
+	return <Layout>{content}</Layout>;
 };
 
 export default App;

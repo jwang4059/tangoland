@@ -6,9 +6,15 @@ import { Footer } from "./Footer";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
+		height: "100vh",
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
+		textAlign: "center",
+		padding: theme.spacing(3),
+	},
+	main: {
+		flex: "1 0 auto",
 	},
 }));
 
@@ -17,9 +23,9 @@ export const Layout = ({ children }) => {
 
 	return (
 		<>
-			<Header />
 			<Container className={classes.container} maxWidth="xs">
-				<main>{children}</main>
+				<Header />
+				<main className={classes.main}>{children}</main>
 				<Footer />
 			</Container>
 		</>
