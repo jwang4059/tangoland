@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -38,11 +38,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const Flashcard = () => {
+export const Flashcard = ({ flashcard }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const flashcards = useSelector((state) => state.flashcards.data);
-	const counter = useSelector((state) => state.flashcards.counter);
 
 	const [open, setOpen] = useState(false);
 	const [questionType, setQuestionType] = useState("expression");
@@ -50,8 +48,6 @@ export const Flashcard = () => {
 	const [answer, setAnswer] = useState("");
 	const [error, setError] = useState(false);
 	const [mistake, setMistake] = useState(false);
-
-	const flashcard = flashcards[counter];
 
 	const handleOpen = () => {
 		setOpen(true);
