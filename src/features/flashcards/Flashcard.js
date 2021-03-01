@@ -6,9 +6,12 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 import { Question } from "./Question";
 import { InfoModal } from "./InfoModal";
+import { SettingsModal } from "./SettingsModal";
 import { SelectMenu } from "./SelectMenu";
 import { incrementCounter, incrementScore } from "./flashcardsSlice";
 
@@ -22,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
 	cardContent: {
 		display: "flex",
 		flexDirection: "column",
-		margin: theme.spacing(4, 0),
+		padding: 0,
+		marginBottom: theme.spacing(4),
 	},
 	cardActions: {
 		display: "flex",
@@ -36,26 +40,25 @@ const useStyles = makeStyles((theme) => ({
 	submit: {
 		marginTop: theme.spacing(2),
 	},
+	settingsButton: {
+		marginLeft: "auto",
+	},
+	infoButton: {
+		margin: "0 auto",
+	},
 }));
 
 export const Flashcard = ({ flashcard }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
-	const [open, setOpen] = useState(false);
+	const [openInfo, setOpenInfo] = useState(false);
+	const [openSettings, setOpenSettings] = useState(false);
 	const [questionType, setQuestionType] = useState("expression");
 	const [answerType, setAnswerType] = useState("romaji");
 	const [answer, setAnswer] = useState("");
 	const [error, setError] = useState(false);
 	const [mistake, setMistake] = useState(false);
-
-	const handleOpen = () => {
-		setOpen(true);
-	};
-
-	const handleClose = () => {
-		setOpen(false);
-	};
 
 	const handleAnswerChange = (event) => {
 		setAnswer(event.target.value);
@@ -88,13 +91,32 @@ export const Flashcard = ({ flashcard }) => {
 	return (
 		<Card className={classes.card}>
 			<CardContent className={classes.cardContent}>
+				<IconButton
+					className={classes.settingsButton}
+					onClick={() => setOpenSettings(true)}
+				>
+					<SettingsIcon />
+				</IconButton>
+				<SettingsModal
+					open={openSettings}
+					onClose={() => setOpenSettings(false)}
+				/>
 				<Question
 					flashcard={flashcard}
 					questionType={questionType}
 					setQuestionType={setQuestionType}
 				/>
-				<Button onClick={handleOpen}>Show More</Button>
-				<InfoModal open={open} onClose={handleClose} flashcard={flashcard} />
+				<Button
+					className={classes.infoButton}
+					onClick={() => setOpenInfo(true)}
+				>
+					Show More
+				</Button>
+				<InfoModal
+					open={openInfo}
+					onClose={() => setOpenInfo(false)}
+					flashcard={flashcard}
+				/>
 			</CardContent>
 			<CardActions className={classes.cardActions}>
 				<SelectMenu answerType={answerType} setAnswerType={setAnswerType} />
