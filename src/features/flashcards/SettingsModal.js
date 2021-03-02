@@ -14,7 +14,8 @@ import { updateSelected, selectAllFlashcards } from "./flashcardsSlice";
 const useStyles = makeStyles((theme) => ({
 	root: {
 		minWidth: 250,
-		width: 400,
+		width: "90%",
+		maxWidth: 400,
 		height: 600,
 		backgroundColor: theme.palette.background.paper,
 		boxShadow: theme.shadows[5],
