@@ -32,14 +32,21 @@ const flashcardsSlice = createSlice({
 			state.counter = 0;
 			state.score = 0;
 		},
+		updateSelected: (state, action) => {
+			const { index, selected } = action.payload;
+			const existingFlashcard = state.data[index];
+			if (existingFlashcard) {
+				existingFlashcard.selected = selected;
+			}
+		},
 	},
 	extraReducers: {
 		[fetchFlashcards.pending]: (state) => {
 			state.status = "loading";
 		},
 		[fetchFlashcards.fulfilled]: (state, action) => {
+			state.data = action.payload.map((info) => ({ info, selected: true }));
 			state.status = "succeeded";
-			state.data = action.payload;
 		},
 		[fetchFlashcards.rejected]: (state, action) => {
 			state.status = "failed";
@@ -52,6 +59,7 @@ export const {
 	incrementCounter,
 	incrementScore,
 	reset,
+	updateSelected,
 } = flashcardsSlice.actions;
 
 export default flashcardsSlice.reducer;

@@ -19,7 +19,7 @@ export const FlashcardsPage = () => {
 	} else if (flashcardsStatus === "succeeded") {
 		content = (
 			<>
-				<Flashcard flashcard={flashcards[counter]} />
+				<Flashcard flashcard={flashcards[counter].info} />
 				<Score />
 				<ResetButton />
 			</>
