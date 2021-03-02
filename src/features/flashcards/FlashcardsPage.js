@@ -5,10 +5,11 @@ import { Error } from "../../components/Error";
 import { Flashcard } from "./Flashcard";
 import { Score } from "./Score";
 import { ResetButton } from "./ResetButton";
+import { selectFlashcardsSelected } from "./flashcardsSlice";
 
 export const FlashcardsPage = () => {
 	const flashcardsStatus = useSelector((state) => state.flashcards.status);
-	const flashcards = useSelector((state) => state.flashcards.data);
+	const flashcards = useSelector(selectFlashcardsSelected);
 	const counter = useSelector((state) => state.flashcards.counter);
 	const error = useSelector((state) => state.flashcards.error);
 

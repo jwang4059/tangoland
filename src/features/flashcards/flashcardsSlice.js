@@ -1,4 +1,8 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+	createSlice,
+	createAsyncThunk,
+	createSelector,
+} from "@reduxjs/toolkit";
 
 const initialState = {
 	data: [],
@@ -61,5 +65,12 @@ export const {
 	reset,
 	updateSelected,
 } = flashcardsSlice.actions;
+
+export const selectAllFlashcards = (state) => state.flashcards.data;
+
+export const selectFlashcardsSelected = createSelector(
+	selectAllFlashcards,
+	(flashcards) => flashcards.filter((flashcard) => flashcard.selected === true)
+);
 
 export default flashcardsSlice.reducer;

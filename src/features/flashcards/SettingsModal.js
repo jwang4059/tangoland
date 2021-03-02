@@ -9,7 +9,7 @@ import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import Typography from "@material-ui/core/Typography";
 
-import { updateSelected } from "./flashcardsSlice";
+import { updateSelected, selectAllFlashcards } from "./flashcardsSlice";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -37,8 +37,8 @@ const convertToString = (str) => {
 export const SettingsModal = ({ open, onClose }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	let flashcards = useSelector((state) => state.flashcards.data);
-	const [currentPage, setCurrentPage] = useState(2);
+	const flashcards = useSelector(selectAllFlashcards);
+	const [currentPage, setCurrentPage] = useState(0);
 	const limit = 10;
 	const start = currentPage * limit;
 	const end = start + limit;
