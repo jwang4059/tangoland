@@ -8,7 +8,7 @@ import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import Typography from "@material-ui/core/Typography";
 
-import { FlashcardsTable } from "./FlashcardsTable";
+import FlashcardsTable from "./FlashcardsTable";
 import { selectAllFlashcards } from "./flashcardsSlice";
 
 const useStyles = makeStyles((theme) => ({
@@ -50,12 +50,9 @@ export const SettingsModal = ({ open, onClose }) => {
 				<Typography>Settings</Typography>
 				<hr />
 				<Typography>Check the words that you would like to study.</Typography>
-				<FlashcardsTable
-					flashcards={flashcards.slice(start, end)}
-					offset={start}
-				/>
+				<FlashcardsTable />
 
-				<Box display="flex" justifyContent="center" alignItems="center">
+				{/* <Box display="flex" justifyContent="center" alignItems="center">
 					<IconButton disabled={currentPage === 0} onClick={handlePrevPage}>
 						<NavigateBeforeIcon />
 					</IconButton>
@@ -66,7 +63,7 @@ export const SettingsModal = ({ open, onClose }) => {
 					>
 						<NavigateNextIcon />
 					</IconButton>
-				</Box>
+				</Box> */}
 			</div>
 		</Modal>
 	);
