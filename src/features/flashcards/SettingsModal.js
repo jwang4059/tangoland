@@ -1,21 +1,18 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
 import Modal from "@material-ui/core/Modal";
-import IconButton from "@material-ui/core/IconButton";
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 import FlashcardsTable from "./FlashcardsTable";
-import { selectAllFlashcards } from "./flashcardsSlice";
+import { selectAllFlashcards, updateSelected } from "./flashcardsSlice";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		minWidth: 250,
 		width: "90%",
-		maxWidth: 400,
+		maxWidth: 500,
 		height: 600,
 		backgroundColor: theme.palette.background.paper,
 		boxShadow: theme.shadows[5],
@@ -25,45 +22,58 @@ const useStyles = makeStyles((theme) => ({
 		left: "50%",
 		transform: "translate(-50%, -50%)",
 	},
+	title: {
+		fontSize: "2.25rem",
+	},
+	buttons: {
+		display: "flex",
+		justifyContent: "flex-end",
+	},
 }));
 
 export const SettingsModal = ({ open, onClose }) => {
 	const classes = useStyles();
+	const dispatch = useDispatch();
 	const flashcards = useSelector(selectAllFlashcards);
-	const [currentPage, setCurrentPage] = useState(0);
-	const limit = 10;
-	const start = currentPage * limit;
-	const end = start + limit;
-	const numPages = Math.floor(flashcards.length / limit);
+	const [selected, setSelected] = React.useState(
+		flashcards.map(({ selected }) => selected)
+	);
 
-	const handlePrevPage = () => {
-		setCurrentPage(currentPage - 1);
-	};
-
-	const handleNextPage = () => {
-		setCurrentPage(currentPage + 1);
-	};
+	const rows = flashcards.map(({ info: flashcard }) => flashcard);
 
 	return (
 		<Modal open={open} onClose={onClose}>
 			<div className={classes.root}>
-				<Typography>Settings</Typography>
+				<Typography className={classes.title} color="primary">
+					Settings
+				</Typography>
 				<hr />
-				<Typography>Check the words that you would like to study.</Typography>
-				<FlashcardsTable />
-
-				{/* <Box display="flex" justifyContent="center" alignItems="center">
-					<IconButton disabled={currentPage === 0} onClick={handlePrevPage}>
-						<NavigateBeforeIcon />
-					</IconButton>
-					<Typography>{currentPage + 1}</Typography>
-					<IconButton
-						disabled={currentPage === numPages}
-						onClick={handleNextPage}
+				<Typography gutterBottom>
+					Check the words that you would like to study.
+				</Typography>
+				<FlashcardsTable
+					rows={rows}
+					selected={selected}
+					setSelected={setSelected}
+				/>
+				<div className={classes.buttons}>
+					<Button
+						variant="contained"
+						color="primary"
+						size="small"
+						onClick={() => dispatch(updateSelected(selected))}
 					>
-						<NavigateNextIcon />
-					</IconButton>
-				</Box> */}
+						Update
+					</Button>
+					<Button
+						variant="contained"
+						color="primary"
+						size="small"
+						onClick={onClose}
+					>
+						Cancel
+					</Button>
+				</div>
 			</div>
 		</Modal>
 	);

@@ -37,11 +37,12 @@ const flashcardsSlice = createSlice({
 			state.score = 0;
 		},
 		updateSelected: (state, action) => {
-			const { index, selected } = action.payload;
-			const existingFlashcard = state.data[index];
-			if (existingFlashcard) {
-				existingFlashcard.selected = selected;
-			}
+			action.payload.forEach((selected, index) => {
+				const existingFlashcard = state.data[index];
+				if (existingFlashcard) {
+					existingFlashcard.selected = selected;
+				}
+			});
 		},
 	},
 	extraReducers: {

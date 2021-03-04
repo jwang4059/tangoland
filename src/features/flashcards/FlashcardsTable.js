@@ -1,6 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { lighten, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -8,17 +7,10 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
-
-import { selectAllFlashcards } from "./flashcardsSlice";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -33,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 		paddingRight: theme.spacing(1),
 	},
 	container: {
-		maxHeight: 200,
+		maxHeight: 300,
 	},
 	title: {
 		flex: "1 1 100%",
@@ -41,54 +33,22 @@ const useStyles = makeStyles((theme) => ({
 	table: {
 		minWidth: 750,
 	},
-	visuallyHidden: {
-		border: 0,
-		clip: "rect(0 0 0 0)",
-		height: 1,
-		margin: -1,
-		overflow: "hidden",
-		padding: 0,
-		position: "absolute",
-		top: 20,
-		width: 1,
-	},
 }));
 
-export default function BasicTable() {
+export default function FlashcardsTable({ rows, selected, setSelected }) {
 	const classes = useStyles();
-	const flashcards = useSelector(selectAllFlashcards);
-	const [selected, setSelected] = React.useState([]);
 	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-	const rows = flashcards.map(({ info: flashcard }) => flashcard);
+	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
 	const handleSelectAllClick = (event) => {
-		if (event.target.checked) {
-			const newSelecteds = rows.map((row) => row.expression);
-			setSelected(newSelecteds);
-			return;
-		}
-		setSelected([]);
+		setSelected(
+			new Array(rows.length).fill(event.target.checked ? true : false)
+		);
 	};
 
-	const handleClick = (event, name) => {
-		const selectedIndex = selected.indexOf(name);
-		let newSelected = [];
-
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, name);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(
-				selected.slice(0, selectedIndex),
-				selected.slice(selectedIndex + 1)
-			);
-		}
-
+	const handleClick = (event, index) => {
+		let newSelected = selected.slice();
+		newSelected.splice(index, 1, event.target.checked ? true : false);
 		setSelected(newSelected);
 	};
 
@@ -101,7 +61,7 @@ export default function BasicTable() {
 		setPage(0);
 	};
 
-	const isSelected = (name) => selected.indexOf(name) !== -1;
+	const isSelected = (index) => selected[index];
 
 	const emptyRows =
 		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -109,16 +69,6 @@ export default function BasicTable() {
 	return (
 		<div className={classes.root}>
 			<Paper className={classes.paper}>
-				<Toolbar className={classes.toolbar}>
-					<Typography
-						className={classes.title}
-						variant="h6"
-						id="tableTitle"
-						component="div"
-					>
-						Word Bank
-					</Typography>
-				</Toolbar>
 				<TableContainer className={classes.container} component={Paper}>
 					<Table
 						className={classes.table}
@@ -132,9 +82,9 @@ export default function BasicTable() {
 								<TableCell padding="checkbox">
 									<Checkbox
 										indeterminate={
-											selected.length > 0 && selected.length < rows.length
+											selected.some(Boolean) && !selected.every(Boolean)
 										}
-										checked={rows.length > 0 && selected.length === rows.length}
+										checked={selected.every(Boolean)}
 										onChange={handleSelectAllClick}
 										inputProps={{ "aria-label": "select all desserts" }}
 									/>
@@ -149,17 +99,18 @@ export default function BasicTable() {
 							{rows
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((row, index) => {
-									const isItemSelected = isSelected(row.expression);
-									const labelId = `enhanced-table-checkbox-${index}`;
+									const realIndex = page * rowsPerPage + index;
+									const isItemSelected = isSelected(realIndex);
+									const labelId = `enhanced-table-checkbox-${realIndex}`;
 
 									return (
 										<TableRow
 											hover
-											onClick={(event) => handleClick(event, row.expression)}
+											onClick={(event) => handleClick(event, realIndex)}
 											role="checkbox"
 											aria-checked={isItemSelected}
 											tabIndex={-1}
-											key={row.expression}
+											key={realIndex}
 											selected={isItemSelected}
 										>
 											<TableCell padding="checkbox">
@@ -191,7 +142,7 @@ export default function BasicTable() {
 					</Table>
 				</TableContainer>
 				<TablePagination
-					rowsPerPageOptions={[5, 10, 25]}
+					rowsPerPageOptions={[5, 10, 25, { value: -1, label: "All" }]}
 					component="div"
 					count={rows.length}
 					rowsPerPage={rowsPerPage}
