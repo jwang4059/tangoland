@@ -12,9 +12,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 	expression: {
 		fontSize: "3rem",
+		lineHeight: 1,
 	},
 	meaning: {
-		fontSize: "2rem",
+		fontSize: "2.25rem",
+		lineHeight: "2.5rem",
 	},
 }));
 
@@ -32,11 +34,15 @@ export const Question = ({ flashcard, questionType, setQuestionType }) => {
 	return (
 		<div className={classes.container} onClick={handleQuestionToggle}>
 			{questionType === "expression" ? (
-				<Typography className={classes.expression} variant="h2" align="center">
+				<Typography
+					className={classes.expression}
+					component="h2"
+					align="center"
+				>
 					{flashcard[questionType]}
 				</Typography>
 			) : (
-				<Typography className={classes.meaning} variant="h2" align="center">
+				<Typography className={classes.meaning} component="h2" align="center">
 					{flashcard[questionType].join(", ")}
 				</Typography>
 			)}

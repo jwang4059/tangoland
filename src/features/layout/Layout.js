@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(3),
 	},
 	main: {
+		width: "100%",
 		flex: "1 0 auto",
 	},
 }));

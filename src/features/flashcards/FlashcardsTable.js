@@ -35,6 +35,17 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+const arrayEquals = (a, b) => {
+	if (a === b) return true;
+	if (a === null || b === null) return false;
+	if (a.length !== b.length) return false;
+
+	for (let i = 0; i < a.length; i++) {
+		if (a[i] !== b[i]) return false;
+	}
+	return true;
+};
+
 export default function FlashcardsTable({ rows, selected, setSelected }) {
 	const classes = useStyles();
 	const [page, setPage] = React.useState(0);
@@ -48,7 +59,7 @@ export default function FlashcardsTable({ rows, selected, setSelected }) {
 
 	const handleClick = (event, index) => {
 		let newSelected = selected.slice();
-		newSelected.splice(index, 1, event.target.checked ? true : false);
+		newSelected[index] = event.target.checked ? true : false;
 		setSelected(newSelected);
 	};
 

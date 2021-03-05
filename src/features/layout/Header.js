@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 			fontSize: "3rem",
 		},
 		[theme.breakpoints.up("md")]: {
-			fontSize: "4rem",
+			fontSize: "3.75rem",
 		},
 	},
 }));
@@ -27,7 +27,7 @@ export const Header = () => {
 	return (
 		<header className={classes.header}>
 			<Link to="/" className={classes.link}>
-				<Typography className={classes.title} component="h1" variant="h1">
+				<Typography className={classes.title} component="h1">
 					TangoLand
 				</Typography>
 			</Link>

@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
 		margin: theme.spacing(4, 0),
 	},
 	title: {
-		fontSize: "1.125rem",
+		fontSize: "1.5rem",
+		lineHeight: "2rem",
 		fontWeight: "700",
 	},
 	button: {
@@ -25,7 +26,7 @@ export const HomePage = () => {
 
 	return (
 		<section className={classes.root}>
-			<Typography className={classes.title} variant="h2" component="h2">
+			<Typography className={classes.title} component="h2" color="primary">
 				Introduction
 			</Typography>
 			<hr />
