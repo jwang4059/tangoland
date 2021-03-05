@@ -14,6 +14,8 @@ const useStyles = makeStyles((theme) => ({
 		width: "90%",
 		maxWidth: 500,
 		height: 530,
+		display: "flex",
+		flexDirection: "column",
 		backgroundColor: theme.palette.background.paper,
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2),
@@ -25,9 +27,14 @@ const useStyles = makeStyles((theme) => ({
 	title: {
 		fontSize: "2.25rem",
 	},
+	body: {
+		flex: "1 0 auto",
+	},
 	buttons: {
 		display: "flex",
+		flexShrink: 0,
 		justifyContent: "flex-end",
+		marginBottom: theme.spacing(1),
 	},
 	button: {
 		margin: theme.spacing(1),
@@ -51,20 +58,22 @@ export const SettingsModal = ({ open, onClose }) => {
 	};
 
 	return (
-		<Modal open={open} onClose={onClose}>
+		<Modal open={open} onClose={onClose} aria-label="settings">
 			<div className={classes.root}>
-				<Typography className={classes.title} color="primary">
-					Settings
-				</Typography>
-				<hr />
-				<Typography gutterBottom>
-					Check the words that you would like to study.
-				</Typography>
-				<FlashcardsTable
-					rows={rows}
-					selected={selected}
-					setSelected={setSelected}
-				/>
+				<div className={classes.body}>
+					<Typography className={classes.title} color="primary">
+						Settings
+					</Typography>
+					<hr />
+					<Typography gutterBottom>
+						Check the words that you would like to study.
+					</Typography>
+					<FlashcardsTable
+						rows={rows}
+						selected={selected}
+						setSelected={setSelected}
+					/>
+				</div>
 				<div className={classes.buttons}>
 					<Button
 						className={classes.button}

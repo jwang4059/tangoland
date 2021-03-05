@@ -31,7 +31,7 @@ export const InfoModal = ({ open, onClose, flashcard }) => {
 		.join(", ");
 
 	return (
-		<Modal open={open} onClose={onClose}>
+		<Modal open={open} onClose={onClose} aria-label="more-info-modal">
 			<div className={classes.root}>
 				<Typography gutterBottom>
 					<strong>More Info</strong>

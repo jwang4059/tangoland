@@ -7,13 +7,11 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 
 const useStyles = makeStyles((theme) => ({
-	root: {
+	continer: {
 		width: "100%",
 	},
 	paper: {
@@ -78,15 +76,14 @@ export default function FlashcardsTable({ rows, selected, setSelected }) {
 		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
 	return (
-		<div className={classes.root}>
+		<div className={classes.container}>
 			<Paper className={classes.paper}>
 				<TableContainer className={classes.container} component={Paper}>
 					<Table
 						className={classes.table}
-						aria-labelledby="tableTitle"
 						stickyHeader
 						size="small"
-						aria-label="enhanced table"
+						aria-label="flashcards table"
 					>
 						<TableHead>
 							<TableRow>
@@ -97,7 +94,7 @@ export default function FlashcardsTable({ rows, selected, setSelected }) {
 										}
 										checked={selected.every(Boolean)}
 										onChange={handleSelectAllClick}
-										inputProps={{ "aria-label": "select all desserts" }}
+										inputProps={{ "aria-label": "select all flashcards" }}
 									/>
 								</TableCell>
 								<TableCell align="left">Expression</TableCell>
@@ -112,7 +109,7 @@ export default function FlashcardsTable({ rows, selected, setSelected }) {
 								.map((row, index) => {
 									const realIndex = page * rowsPerPage + index;
 									const isItemSelected = isSelected(realIndex);
-									const labelId = `enhanced-table-checkbox-${realIndex}`;
+									const labelId = `flashcards-table-checkbox-${realIndex}`;
 
 									return (
 										<TableRow

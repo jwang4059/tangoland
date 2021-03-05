@@ -93,6 +93,7 @@ export const Flashcard = ({ flashcard }) => {
 			<CardContent className={classes.cardContent}>
 				<IconButton
 					className={classes.settingsButton}
+					aria-label="open settings"
 					onClick={() => setOpenSettings(true)}
 				>
 					<SettingsIcon />
