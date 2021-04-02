@@ -14,13 +14,7 @@ export const Footer = () => {
 	return (
 		<footer className={classes.footer}>
 			<Typography variant="body2" color="textSecondary" align="center">
-				© {new Date().getFullYear()}, Built with
-				{` `}
-				<a href="https://github.com/facebook/create-react-app">
-					Create React App
-				</a>
-				<br />
-				Created by John Wang 2021
+				Design and Built by John Wang 2021
 			</Typography>
 		</footer>
 	);
