@@ -14,7 +14,7 @@ export const Footer = () => {
 	return (
 		<footer className={classes.footer}>
 			<Typography variant="body2" color="textSecondary" align="center">
-				Design and Built by John Wang 2021
+				Design and Built by John Wang
 			</Typography>
 		</footer>
 	);
