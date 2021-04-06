@@ -86,7 +86,7 @@ export const SettingsModal = ({ open, onClose }) => {
 					</Button>
 					<Button
 						className={classes.button}
-						variant="contained"
+						variant="outlined"
 						color="primary"
 						size="small"
 						onClick={onClose}

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
@@ -14,7 +15,9 @@ export const Footer = () => {
 	return (
 		<footer className={classes.footer}>
 			<Typography variant="body2" color="textSecondary" align="center">
-				Design and Built by John Wang
+				<a href="https://johnwang.netlify.app/" target="_blank">
+					Design and Built by John Wang
+				</a>
 			</Typography>
 		</footer>
 	);

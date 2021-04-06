@@ -2,6 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -13,6 +15,13 @@ const useStyles = makeStyles((theme) => ({
 		top: "30%",
 		left: "50%",
 		transform: "translate(-50%, -50%)",
+	},
+	header: {
+		display: "flex",
+		alignItems: "center",
+	},
+	title: {
+		flexGrow: 1,
 	},
 }));
 
@@ -33,9 +42,14 @@ export const InfoModal = ({ open, onClose, flashcard }) => {
 	return (
 		<Modal open={open} onClose={onClose} aria-label="more-info-modal">
 			<div className={classes.root}>
-				<Typography gutterBottom>
-					<strong>More Info</strong>
-				</Typography>
+				<div className={classes.header}>
+					<Typography className={classes.title}>
+						<strong>More Info</strong>
+					</Typography>
+					<IconButton size="small" onClick={onClose}>
+						<CloseIcon />
+					</IconButton>
+				</div>
 				<hr />
 				<Typography gutterBottom>
 					<strong>Expression:</strong> {expression}
