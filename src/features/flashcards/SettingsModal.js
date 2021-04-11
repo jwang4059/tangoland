@@ -9,6 +9,7 @@ import FlashcardsTable from "./FlashcardsTable";
 import {
 	selectAllFlashcardIds,
 	selectAllFlashcards,
+	selectSelectedFlashcards,
 	updateSelected,
 	reset,
 } from "./flashcardsSlice";
@@ -51,13 +52,14 @@ export const SettingsModal = ({ open, onClose }) => {
 	const dispatch = useDispatch();
 	const flashcardIds = useSelector(selectAllFlashcardIds);
 	const rows = useSelector(selectAllFlashcards);
+	const selectedFlashcards = useSelector(selectSelectedFlashcards);
 
 	const [selected, setSelected] = React.useState(new Set());
 
 	useEffect(() => {
 		const newSelecteds = new Set();
-		rows.forEach((row) => {
-			newSelecteds.add(row._id);
+		selectedFlashcards.forEach((flashcard) => {
+			newSelecteds.add(flashcard._id);
 		});
 		setSelected(newSelecteds);
 	}, []);

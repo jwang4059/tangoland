@@ -81,8 +81,3 @@ export const {
 
 export const selectSelectedFlashcards = (state) =>
 	state.flashcards.selectedFlashcards;
-
-export const selectFlashcardsSelected = createSelector(
-	selectAllFlashcards,
-	(flashcards) => flashcards.filter((flashcard) => flashcard.selected === true)
-);
