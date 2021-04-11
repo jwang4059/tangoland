@@ -26,25 +26,27 @@ const HomePage = () => {
 	const history = useHistory();
 
 	return (
-		<section className={classes.root}>
-			<Typography className={classes.title} component="h2" color="primary">
-				Introduction
-			</Typography>
-			<hr />
-			<Typography gutterBottom>
-				Welcome to Tangoland, aka 単語のランド. The purpose of this app is to
-				test your knowledge on common japanese expressions. To begin, click the
-				Study button now and start your journey through the land of vocab.
-			</Typography>
-			<Button
-				className={classes.button}
-				variant="contained"
-				color="primary"
-				onClick={() => history.push("/study")}
-			>
-				Study
-			</Button>
-		</section>
+		<main>
+			<section className={classes.root}>
+				<Typography className={classes.title} component="h2" color="primary">
+					Introduction
+				</Typography>
+				<hr />
+				<Typography gutterBottom>
+					Welcome to Tangoland, aka 単語のランド. The purpose of this app is to
+					test your knowledge on common japanese expressions. To begin, click
+					the Study button now and start your journey through the land of vocab.
+				</Typography>
+				<Button
+					className={classes.button}
+					variant="contained"
+					color="primary"
+					onClick={() => history.push("/study")}
+				>
+					Study
+				</Button>
+			</section>
+		</main>
 	);
 };
 

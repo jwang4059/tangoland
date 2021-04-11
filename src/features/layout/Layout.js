@@ -30,7 +30,7 @@ const Layout = ({ children }) => {
 			<Container className={classes.root} maxWidth="xs">
 				<div className={classes.content}>
 					<Header />
-					<main>{children}</main>
+					{children}
 				</div>
 				<Footer classes={classes} />
 			</Container>

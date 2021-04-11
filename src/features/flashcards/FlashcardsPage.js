@@ -1,11 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Loading } from "../../components/Loading";
-import { Error } from "../../components/Error";
+import Alert from "@material-ui/lab/Alert";
+
+import Loading from "../../components/Loading";
 import { Flashcard } from "./Flashcard";
 import { EndCard } from "./EndCard";
-import { Score } from "./Score";
-import { ResetButton } from "./ResetButton";
+import Score from "./Score";
+import ResetButton from "./ResetButton";
 import { selectSelectedFlashcards } from "./flashcardsSlice";
 
 const FlashcardsPage = () => {
@@ -34,10 +35,10 @@ const FlashcardsPage = () => {
 			</>
 		);
 	} else if (flashcardsStatus === "failed") {
-		content = <Error message={error} />;
+		content = <Alert severity="error">{error}</Alert>;
 	}
 
-	return <section>{content}</section>;
+	return <main>{content}</main>;
 };
 
 export default FlashcardsPage;

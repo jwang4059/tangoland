@@ -3,13 +3,14 @@ import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
 	score: {
-		marginBottom: theme.spacing(2),
+		display: "block",
+		margin: "1rem 0",
 	},
-}));
+});
 
-export const Score = () => {
+const Score = () => {
 	const classes = useStyles();
 	const numCorrect = useSelector((state) => state.flashcards.score);
 	const total = useSelector((state) => state.flashcards.counter);
@@ -17,7 +18,10 @@ export const Score = () => {
 	return (
 		<Typography
 			className={classes.score}
+			component="span"
 			color="textSecondary"
 		>{`${numCorrect} / ${total}`}</Typography>
 	);
 };
+
+export default Score;

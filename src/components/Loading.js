@@ -3,7 +3,7 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-export const Loading = () => {
+const Loading = () => {
 	return (
 		<Box>
 			<Typography>Loading...</Typography>
@@ -13,3 +13,5 @@ export const Loading = () => {
 		</Box>
 	);
 };
+
+export default Loading;

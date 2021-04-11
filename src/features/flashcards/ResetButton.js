@@ -5,13 +5,13 @@ import Button from "@material-ui/core/Button";
 
 import { reset } from "./flashcardsSlice";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
 	button: {
-		marginBottom: theme.spacing(2),
+		margin: "1rem 0",
 	},
-}));
+});
 
-export const ResetButton = () => {
+const ResetButton = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -26,3 +26,5 @@ export const ResetButton = () => {
 		</Button>
 	);
 };
+
+export default ResetButton;

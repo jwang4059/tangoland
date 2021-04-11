@@ -2,7 +2,6 @@ import {
 	createSlice,
 	createAsyncThunk,
 	createEntityAdapter,
-	createSelector,
 } from "@reduxjs/toolkit";
 
 const flashcardsAdapter = createEntityAdapter({
