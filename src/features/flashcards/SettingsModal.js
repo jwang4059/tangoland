@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
@@ -6,7 +6,12 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 import FlashcardsTable from "./FlashcardsTable";
-import { selectAllFlashcards, updateSelected, reset } from "./flashcardsSlice";
+import {
+	selectAllFlashcardIds,
+	selectAllFlashcards,
+	updateSelected,
+	reset,
+} from "./flashcardsSlice";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -27,10 +32,10 @@ const useStyles = makeStyles((theme) => ({
 	title: {
 		fontSize: "2.25rem",
 	},
-	body: {
+	modalBody: {
 		flex: "1 0 auto",
 	},
-	buttons: {
+	modalFooter: {
 		display: "flex",
 		flexShrink: 0,
 		justifyContent: "flex-end",
@@ -44,15 +49,21 @@ const useStyles = makeStyles((theme) => ({
 export const SettingsModal = ({ open, onClose }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const flashcards = useSelector(selectAllFlashcards);
-	const [selected, setSelected] = React.useState(
-		flashcards.map(({ selected }) => selected)
-	);
+	const flashcardIds = useSelector(selectAllFlashcardIds);
+	const rows = useSelector(selectAllFlashcards);
 
-	const rows = flashcards.map(({ info: flashcard }) => flashcard);
+	const [selected, setSelected] = React.useState(new Set());
+
+	useEffect(() => {
+		const newSelecteds = new Set();
+		rows.forEach((row) => {
+			newSelecteds.add(row._id);
+		});
+		setSelected(newSelecteds);
+	}, []);
 
 	const updateSettings = () => {
-		dispatch(updateSelected(selected));
+		dispatch(updateSelected(Array.from(selected)));
 		dispatch(reset());
 		onClose();
 	};
@@ -60,8 +71,8 @@ export const SettingsModal = ({ open, onClose }) => {
 	return (
 		<Modal open={open} onClose={onClose} aria-label="settings">
 			<div className={classes.root}>
-				<div className={classes.body}>
-					<Typography className={classes.title} color="primary">
+				<div className={classes.modalBody}>
+					<Typography component="h2" className={classes.title} color="primary">
 						Settings
 					</Typography>
 					<hr />
@@ -69,12 +80,13 @@ export const SettingsModal = ({ open, onClose }) => {
 						Check the words that you would like to study.
 					</Typography>
 					<FlashcardsTable
+						flashcardIds={flashcardIds}
 						rows={rows}
 						selected={selected}
 						setSelected={setSelected}
 					/>
 				</div>
-				<div className={classes.buttons}>
+				<div className={classes.modalFooter}>
 					<Button
 						className={classes.button}
 						variant="contained"

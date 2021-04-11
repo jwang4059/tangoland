@@ -1,16 +1,21 @@
 import {
 	createSlice,
 	createAsyncThunk,
+	createEntityAdapter,
 	createSelector,
 } from "@reduxjs/toolkit";
 
-const initialState = {
-	data: [],
+const flashcardsAdapter = createEntityAdapter({
+	selectId: (flashcard) => flashcard._id,
+});
+
+const initialState = flashcardsAdapter.getInitialState({
+	selectedFlashcards: [],
 	counter: 0,
 	score: 0,
 	status: "idle",
 	error: null,
-};
+});
 
 export const fetchFlashcards = createAsyncThunk(
 	"flashcards/fetchFlashcards",
@@ -18,7 +23,9 @@ export const fetchFlashcards = createAsyncThunk(
 		const response = await fetch(
 			"https://tangoland-api.herokuapp.com/database"
 		);
-		return response.json();
+		const data = await response.json();
+
+		return data;
 	}
 );
 
@@ -37,12 +44,9 @@ const flashcardsSlice = createSlice({
 			state.score = 0;
 		},
 		updateSelected: (state, action) => {
-			action.payload.forEach((selected, index) => {
-				const existingFlashcard = state.data[index];
-				if (existingFlashcard) {
-					existingFlashcard.selected = selected;
-				}
-			});
+			state.selectedFlashcards = Object.values(
+				state.entities
+			).filter((flashcard) => action.payload.includes(flashcard._id));
 		},
 	},
 	extraReducers: {
@@ -50,15 +54,18 @@ const flashcardsSlice = createSlice({
 			state.status = "loading";
 		},
 		[fetchFlashcards.fulfilled]: (state, action) => {
-			state.data = action.payload.map((info) => ({ info, selected: true }));
+			flashcardsAdapter.setAll(state, action.payload);
+			state.selectedFlashcards = action.payload;
 			state.status = "succeeded";
 		},
 		[fetchFlashcards.rejected]: (state, action) => {
-			state.status = "failed";
 			state.error = action.error.message;
+			state.status = "failed";
 		},
 	},
 });
+
+export default flashcardsSlice.reducer;
 
 export const {
 	incrementCounter,
@@ -67,11 +74,15 @@ export const {
 	updateSelected,
 } = flashcardsSlice.actions;
 
-export const selectAllFlashcards = (state) => state.flashcards.data;
+export const {
+	selectIds: selectAllFlashcardIds,
+	selectAll: selectAllFlashcards,
+} = flashcardsAdapter.getSelectors((state) => state.flashcards);
+
+export const selectSelectedFlashcards = (state) =>
+	state.flashcards.selectedFlashcards;
 
 export const selectFlashcardsSelected = createSelector(
 	selectAllFlashcards,
 	(flashcards) => flashcards.filter((flashcard) => flashcard.selected === true)
 );
-
-export default flashcardsSlice.reducer;

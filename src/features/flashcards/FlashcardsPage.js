@@ -6,11 +6,11 @@ import { Flashcard } from "./Flashcard";
 import { EndCard } from "./EndCard";
 import { Score } from "./Score";
 import { ResetButton } from "./ResetButton";
-import { selectFlashcardsSelected } from "./flashcardsSlice";
+import { selectSelectedFlashcards } from "./flashcardsSlice";
 
-export const FlashcardsPage = () => {
+const FlashcardsPage = () => {
 	const flashcardsStatus = useSelector((state) => state.flashcards.status);
-	const flashcards = useSelector(selectFlashcardsSelected);
+	const flashcards = useSelector(selectSelectedFlashcards);
 	const counter = useSelector((state) => state.flashcards.counter);
 	const error = useSelector((state) => state.flashcards.error);
 
@@ -23,7 +23,7 @@ export const FlashcardsPage = () => {
 			<>
 				{counter < flashcards.length ? (
 					<>
-						<Flashcard flashcard={flashcards[counter].info} />
+						<Flashcard flashcard={flashcards[counter]} />
 						<Score />
 					</>
 				) : (
@@ -39,3 +39,5 @@ export const FlashcardsPage = () => {
 
 	return <section>{content}</section>;
 };
+
+export default FlashcardsPage;

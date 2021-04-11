@@ -33,31 +33,31 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const arrayEquals = (a, b) => {
-	if (a === b) return true;
-	if (a === null || b === null) return false;
-	if (a.length !== b.length) return false;
-
-	for (let i = 0; i < a.length; i++) {
-		if (a[i] !== b[i]) return false;
-	}
-	return true;
-};
-
-export default function FlashcardsTable({ rows, selected, setSelected }) {
+const FlashcardsTable = ({ flashcardIds, rows, selected, setSelected }) => {
 	const classes = useStyles();
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
 	const handleSelectAllClick = (event) => {
-		setSelected(
-			new Array(rows.length).fill(event.target.checked ? true : false)
-		);
+		const newSelecteds = new Set();
+
+		if (event.target.checked) {
+			flashcardIds.forEach((id) => {
+				newSelecteds.add(id);
+			});
+		}
+		setSelected(newSelecteds);
 	};
 
-	const handleClick = (event, index) => {
-		let newSelected = selected.slice();
-		newSelected[index] = event.target.checked ? true : false;
+	const handleClick = (id) => {
+		let newSelected = new Set(selected);
+
+		if (newSelected.has(id)) {
+			newSelected.delete(id);
+		} else {
+			newSelected.add(id);
+		}
+
 		setSelected(newSelected);
 	};
 
@@ -70,7 +70,7 @@ export default function FlashcardsTable({ rows, selected, setSelected }) {
 		setPage(0);
 	};
 
-	const isSelected = (index) => selected[index];
+	const isSelected = (id) => selected.has(id);
 
 	const emptyRows =
 		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -90,9 +90,9 @@ export default function FlashcardsTable({ rows, selected, setSelected }) {
 								<TableCell padding="checkbox">
 									<Checkbox
 										indeterminate={
-											selected.some(Boolean) && !selected.every(Boolean)
+											selected.size > 0 && selected.size < rows.length
 										}
-										checked={selected.every(Boolean)}
+										checked={rows.length > 0 && selected.size === rows.length}
 										onChange={handleSelectAllClick}
 										inputProps={{ "aria-label": "select all flashcards" }}
 									/>
@@ -108,17 +108,17 @@ export default function FlashcardsTable({ rows, selected, setSelected }) {
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((row, index) => {
 									const realIndex = page * rowsPerPage + index;
-									const isItemSelected = isSelected(realIndex);
+									const isItemSelected = isSelected(row._id);
 									const labelId = `flashcards-table-checkbox-${realIndex}`;
 
 									return (
 										<TableRow
 											hover
-											onClick={(event) => handleClick(event, realIndex)}
+											onClick={() => handleClick(row._id)}
 											role="checkbox"
 											aria-checked={isItemSelected}
 											tabIndex={-1}
-											key={realIndex}
+											key={row._id}
 											selected={isItemSelected}
 										>
 											<TableCell padding="checkbox">
@@ -161,4 +161,6 @@ export default function FlashcardsTable({ rows, selected, setSelected }) {
 			</Paper>
 		</div>
 	);
-}
+};
+
+export default FlashcardsTable;
