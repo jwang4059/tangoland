@@ -1,5 +1,8 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
+import clsx from "clsx";
+import { lighten, makeStyles } from "@material-ui/core/styles";
+import Toolbar from "@material-ui/core/Toolbar";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -9,10 +12,11 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
-	continer: {
-		width: "100%",
+	container: {
+		maxHeight: 200,
 	},
 	paper: {
 		width: "100%",
@@ -22,16 +26,56 @@ const useStyles = makeStyles((theme) => ({
 		paddingLeft: theme.spacing(2),
 		paddingRight: theme.spacing(1),
 	},
-	container: {
-		maxHeight: 300,
-	},
+	highlight:
+		theme.palette.type === "light"
+			? {
+					color: theme.palette.secondary.main,
+					backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+			  }
+			: {
+					color: theme.palette.text.primary,
+					backgroundColor: theme.palette.secondary.dark,
+			  },
 	title: {
 		flex: "1 1 100%",
 	},
-	table: {
-		minWidth: 750,
-	},
 }));
+
+const TableToolbar = ({ classes, numSelected, rowCount }) => {
+	return (
+		<Toolbar
+			className={clsx(classes.toolbar, {
+				[classes.highlight]: numSelected > 0,
+			})}
+		>
+			{numSelected > 0 ? (
+				<Typography
+					className={classes.title}
+					color="inherit"
+					variant="subtitle1"
+					component="div"
+				>
+					{`${numSelected} / ${rowCount} selected`}
+				</Typography>
+			) : (
+				<Typography
+					className={classes.title}
+					variant="h6"
+					id="tableTitle"
+					component="div"
+				>
+					Flashcards
+				</Typography>
+			)}
+		</Toolbar>
+	);
+};
+
+TableToolbar.propTypes = {
+	classes: PropTypes.object.isRequired,
+	numSelected: PropTypes.number.isRequired,
+	rowCount: PropTypes.number.isRequired,
+};
 
 const FlashcardsTable = ({ flashcardIds, rows, selected, setSelected }) => {
 	const classes = useStyles();
@@ -78,13 +122,13 @@ const FlashcardsTable = ({ flashcardIds, rows, selected, setSelected }) => {
 	return (
 		<div className={classes.container}>
 			<Paper className={classes.paper}>
+				<TableToolbar
+					classes={classes}
+					numSelected={selected.size}
+					rowCount={rows.length}
+				/>
 				<TableContainer className={classes.container} component={Paper}>
-					<Table
-						className={classes.table}
-						stickyHeader
-						size="small"
-						aria-label="flashcards table"
-					>
+					<Table stickyHeader size="small" aria-label="flashcards table">
 						<TableHead>
 							<TableRow>
 								<TableCell padding="checkbox">
