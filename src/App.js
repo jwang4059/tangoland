@@ -5,9 +5,10 @@ import {
 	Route,
 	Redirect,
 } from "react-router-dom";
-import { Layout } from "./features/layout/Layout";
-import { HomePage } from "./features/home/HomePage";
-import { FlashcardsPage } from "./features/flashcards/FlashcardsPage";
+
+import Layout from "./features/layout/Layout";
+import HomePage from "./features/home/HomePage";
+import FlashcardsPage from "./features/flashcards/FlashcardsPage";
 
 const App = () => {
 	return (

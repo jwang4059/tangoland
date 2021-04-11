@@ -1,27 +1,26 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles((theme) => ({
-	footer: {
-		flexShrink: 0,
-	},
-}));
-
-export const Footer = () => {
-	const classes = useStyles();
-
+const Footer = ({ classes }) => {
 	return (
 		<footer className={classes.footer}>
-			<Typography variant="body2" color="textSecondary" align="center">
+			<Typography
+				variant="body2"
+				component="span"
+				color="textSecondary"
+				align="center"
+			>
+				Design and Built by{" "}
 				<a
 					href="https://johnwang.netlify.app/"
 					target="_blank"
 					rel="noreferrer"
 				>
-					Design and Built by John Wang
+					John Wang
 				</a>
 			</Typography>
 		</footer>
 	);
 };
+
+export default Footer;

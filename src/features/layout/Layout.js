@@ -1,11 +1,11 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Header } from "./Header";
-import { Footer } from "./Footer";
+import Header from "./Header";
+import Footer from "./Footer";
 
 const useStyles = makeStyles((theme) => ({
-	container: {
+	root: {
 		height: "100vh",
 		display: "flex",
 		flexDirection: "column",
@@ -13,22 +13,29 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: "center",
 		padding: theme.spacing(3),
 	},
-	main: {
+	content: {
 		width: "100%",
 		flex: "1 0 auto",
 	},
+	footer: {
+		flexShrink: 0,
+	},
 }));
 
-export const Layout = ({ children }) => {
+const Layout = ({ children }) => {
 	const classes = useStyles();
 
 	return (
 		<>
-			<Container className={classes.container} maxWidth="xs">
-				<Header />
-				<main className={classes.main}>{children}</main>
-				<Footer />
+			<Container className={classes.root} maxWidth="xs">
+				<div className={classes.content}>
+					<Header />
+					<main>{children}</main>
+				</div>
+				<Footer classes={classes} />
 			</Container>
 		</>
 	);
 };
+
+export default Layout;
