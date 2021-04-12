@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
+import Snackbar from "@material-ui/core/Snackbar";
 import Typography from "@material-ui/core/Typography";
 
 import FlashcardsTable from "./FlashcardsTable";
@@ -47,13 +48,14 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const SettingsModal = ({ open, onClose }) => {
+const SettingsModal = ({ open, onClose }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const flashcardIds = useSelector(selectAllFlashcardIds);
 	const rows = useSelector(selectAllFlashcards);
 	const selectedFlashcards = useSelector(selectSelectedFlashcards);
 
+	const [openToast, setOpenToast] = React.useState(false);
 	const [selected, setSelected] = React.useState(new Set());
 
 	useEffect(() => {
@@ -67,48 +69,63 @@ export const SettingsModal = ({ open, onClose }) => {
 	const updateSettings = () => {
 		dispatch(updateSelected(Array.from(selected)));
 		dispatch(reset());
+		setOpenToast(true);
 		onClose();
 	};
 
 	return (
-		<Modal open={open} onClose={onClose} aria-label="settings">
-			<div className={classes.root}>
-				<div className={classes.modalBody}>
-					<Typography component="h2" className={classes.title} color="primary">
-						Settings
-					</Typography>
-					<hr />
-					<Typography gutterBottom>
-						Check the words that you would like to study.
-					</Typography>
-					<FlashcardsTable
-						flashcardIds={flashcardIds}
-						rows={rows}
-						selected={selected}
-						setSelected={setSelected}
-					/>
+		<>
+			<Modal open={open} onClose={onClose} aria-label="settings">
+				<div className={classes.root}>
+					<div className={classes.modalBody}>
+						<Typography
+							component="h2"
+							className={classes.title}
+							color="primary"
+						>
+							Settings
+						</Typography>
+						<hr />
+						<Typography gutterBottom>
+							Check the words that you would like to study.
+						</Typography>
+						<FlashcardsTable
+							flashcardIds={flashcardIds}
+							rows={rows}
+							selected={selected}
+							setSelected={setSelected}
+						/>
+					</div>
+					<div className={classes.modalFooter}>
+						<Button
+							className={classes.button}
+							variant="contained"
+							color="primary"
+							size="small"
+							onClick={updateSettings}
+						>
+							Update
+						</Button>
+						<Button
+							className={classes.button}
+							variant="outlined"
+							color="primary"
+							size="small"
+							onClick={onClose}
+						>
+							Cancel
+						</Button>
+					</div>
 				</div>
-				<div className={classes.modalFooter}>
-					<Button
-						className={classes.button}
-						variant="contained"
-						color="primary"
-						size="small"
-						onClick={updateSettings}
-					>
-						Update
-					</Button>
-					<Button
-						className={classes.button}
-						variant="outlined"
-						color="primary"
-						size="small"
-						onClick={onClose}
-					>
-						Cancel
-					</Button>
-				</div>
-			</div>
-		</Modal>
+			</Modal>
+			<Snackbar
+				open={openToast}
+				autoHideDuration={3000}
+				onClose={() => setOpenToast(false)}
+				message="Updated flashcards"
+			/>
+		</>
 	);
 };
+
+export default SettingsModal;

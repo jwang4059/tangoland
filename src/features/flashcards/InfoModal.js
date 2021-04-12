@@ -29,7 +29,7 @@ const convertToString = (str) => {
 	return `"${str}"`;
 };
 
-export const InfoModal = ({ open, onClose, flashcard }) => {
+const InfoModal = ({ open, onClose, flashcard }) => {
 	const classes = useStyles();
 
 	const expression = convertToString(flashcard["expression"]);
@@ -43,7 +43,7 @@ export const InfoModal = ({ open, onClose, flashcard }) => {
 		<Modal open={open} onClose={onClose} aria-label="more-info-modal">
 			<div className={classes.root}>
 				<div className={classes.header}>
-					<Typography className={classes.title}>
+					<Typography className={classes.title} component="h2">
 						<strong>More Info</strong>
 					</Typography>
 					<IconButton size="small" onClick={onClose}>
@@ -67,3 +67,5 @@ export const InfoModal = ({ open, onClose, flashcard }) => {
 		</Modal>
 	);
 };
+
+export default InfoModal;

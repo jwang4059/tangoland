@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const SelectMenu = ({ answerType, setAnswerType }) => {
+const SelectMenu = ({ answerType, setAnswerType }) => {
 	const classes = useStyles();
 
 	const handleChange = (event) => {
@@ -41,3 +41,5 @@ export const SelectMenu = ({ answerType, setAnswerType }) => {
 		</FormControl>
 	);
 };
+
+export default SelectMenu;

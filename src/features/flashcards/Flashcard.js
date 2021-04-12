@@ -9,24 +9,22 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import SettingsIcon from "@material-ui/icons/Settings";
 
-import { Question } from "./Question";
-import { InfoModal } from "./InfoModal";
-import { SettingsModal } from "./SettingsModal";
-import { SelectMenu } from "./SelectMenu";
+import Question from "./Question";
+import InfoModal from "./InfoModal";
+import SettingsModal from "./SettingsModal";
+import SelectMenu from "./SelectMenu";
 import { incrementCounter, incrementScore } from "./flashcardsSlice";
 
 const useStyles = makeStyles((theme) => ({
 	card: {
 		minWidth: 250,
 		maxWidth: 500,
-		padding: theme.spacing(2),
-		margin: theme.spacing(4, 0),
+		padding: "1rem",
+		margin: "2rem 0",
 	},
 	cardContent: {
-		display: "flex",
-		flexDirection: "column",
 		padding: 0,
-		marginBottom: theme.spacing(4),
+		marginBottom: "2rem",
 	},
 	cardActions: {
 		display: "flex",
@@ -37,14 +35,15 @@ const useStyles = makeStyles((theme) => ({
 			flexDirection: "row",
 		},
 	},
+	flashcardHeader: {
+		textAlign: "right",
+	},
+	flashcardContent: {
+		display: "inline-flex",
+		flexDirection: "column",
+	},
 	submit: {
-		marginTop: theme.spacing(2),
-	},
-	settingsButton: {
-		marginLeft: "auto",
-	},
-	infoButton: {
-		margin: "0 auto",
+		marginTop: "1rem",
 	},
 }));
 
@@ -89,30 +88,34 @@ export const Flashcard = ({ flashcard }) => {
 	};
 
 	return (
-		<Card className={classes.card}>
+		<Card className={classes.card} component="section">
 			<CardContent className={classes.cardContent}>
-				<IconButton
-					className={classes.settingsButton}
-					aria-label="open settings"
-					onClick={() => setOpenSettings(true)}
-				>
-					<SettingsIcon />
-				</IconButton>
-				<SettingsModal
-					open={openSettings}
-					onClose={() => setOpenSettings(false)}
-				/>
-				<Question
-					flashcard={flashcard}
-					questionType={questionType}
-					setQuestionType={setQuestionType}
-				/>
-				<Button
-					className={classes.infoButton}
-					onClick={() => setOpenInfo(true)}
-				>
-					Show More
-				</Button>
+				<div className={classes.flashcardHeader}>
+					<IconButton
+						className={classes.settingsButton}
+						aria-label="open settings"
+						onClick={() => setOpenSettings(true)}
+					>
+						<SettingsIcon />
+					</IconButton>
+					<SettingsModal
+						open={openSettings}
+						onClose={() => setOpenSettings(false)}
+					/>
+				</div>
+				<div className={classes.flashcardContent}>
+					<Question
+						flashcard={flashcard}
+						questionType={questionType}
+						setQuestionType={setQuestionType}
+					/>
+					<Button
+						className={classes.infoButton}
+						onClick={() => setOpenInfo(true)}
+					>
+						Show More
+					</Button>
+				</div>
 				<InfoModal
 					open={openInfo}
 					onClose={() => setOpenInfo(false)}
