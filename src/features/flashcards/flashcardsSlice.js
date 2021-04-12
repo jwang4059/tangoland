@@ -1,6 +1,7 @@
 import {
 	createSlice,
 	createAsyncThunk,
+	createSelector,
 	createEntityAdapter,
 } from "@reduxjs/toolkit";
 
@@ -9,7 +10,7 @@ const flashcardsAdapter = createEntityAdapter({
 });
 
 const initialState = flashcardsAdapter.getInitialState({
-	selectedFlashcards: [],
+	selectedIds: [],
 	counter: 0,
 	score: 0,
 	status: "idle",
@@ -43,9 +44,7 @@ const flashcardsSlice = createSlice({
 			state.score = 0;
 		},
 		updateSelected: (state, action) => {
-			state.selectedFlashcards = Object.values(
-				state.entities
-			).filter((flashcard) => action.payload.includes(flashcard._id));
+			state.selectedIds = action.payload;
 		},
 	},
 	extraReducers: {
@@ -54,7 +53,7 @@ const flashcardsSlice = createSlice({
 		},
 		[fetchFlashcards.fulfilled]: (state, action) => {
 			flashcardsAdapter.setAll(state, action.payload);
-			state.selectedFlashcards = action.payload;
+			state.selectedIds = action.payload.map((flashcard) => flashcard._id);
 			state.status = "succeeded";
 		},
 		[fetchFlashcards.rejected]: (state, action) => {
@@ -78,5 +77,10 @@ export const {
 	selectAll: selectAllFlashcards,
 } = flashcardsAdapter.getSelectors((state) => state.flashcards);
 
-export const selectSelectedFlashcards = (state) =>
-	state.flashcards.selectedFlashcards;
+export const selectSelectedIds = (state) => state.flashcards.selectedIds;
+
+export const selectSelectedFlashcards = createSelector(
+	[selectAllFlashcards, selectSelectedIds],
+	(flashcards, selectedIds) =>
+		flashcards.filter((flashcard) => selectedIds.includes(flashcard._id))
+);

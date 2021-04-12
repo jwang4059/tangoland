@@ -10,7 +10,7 @@ import FlashcardsTable from "./FlashcardsTable";
 import {
 	selectAllFlashcardIds,
 	selectAllFlashcards,
-	selectSelectedFlashcards,
+	selectSelectedIds,
 	updateSelected,
 	reset,
 } from "./flashcardsSlice";
@@ -53,18 +53,26 @@ const SettingsModal = ({ open, onClose }) => {
 	const dispatch = useDispatch();
 	const flashcardIds = useSelector(selectAllFlashcardIds);
 	const rows = useSelector(selectAllFlashcards);
-	const selectedFlashcards = useSelector(selectSelectedFlashcards);
+	const selectedIds = useSelector(selectSelectedIds);
 
 	const [openToast, setOpenToast] = React.useState(false);
 	const [selected, setSelected] = React.useState(new Set());
 
 	useEffect(() => {
 		const newSelecteds = new Set();
-		selectedFlashcards.forEach((flashcard) => {
-			newSelecteds.add(flashcard._id);
+		selectedIds.forEach((id) => {
+			newSelecteds.add(id);
 		});
 		setSelected(newSelecteds);
 	}, []);
+
+	const hasChanged = () => {
+		if (selectedIds.length !== selected.size) return true;
+		for (let id of selectedIds) {
+			if (!selected.has(id)) return true;
+		}
+		return false;
+	};
 
 	const updateSettings = () => {
 		dispatch(updateSelected(Array.from(selected)));
@@ -102,6 +110,7 @@ const SettingsModal = ({ open, onClose }) => {
 							variant="contained"
 							color="primary"
 							size="small"
+							disabled={!hasChanged()}
 							onClick={updateSettings}
 						>
 							Update
