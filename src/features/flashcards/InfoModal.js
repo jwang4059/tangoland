@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
 		width: 300,
 		backgroundColor: theme.palette.background.paper,
 		boxShadow: theme.shadows[5],
-		padding: theme.spacing(2),
+		padding: "1rem",
 		position: "absolute",
 		top: "30%",
 		left: "50%",

@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
 	header: {
-		margin: theme.spacing(2),
+		margin: "1rem",
 	},
 	link: {
 		color: "black",

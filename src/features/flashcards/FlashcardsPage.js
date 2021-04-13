@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import Alert from "@material-ui/lab/Alert";
 
 import Loading from "../../components/Loading";
-import { Flashcard } from "./Flashcard";
+import Flashcard from "./Flashcard";
 import EndCard from "./EndCard";
 import Score from "./Score";
 import ResetButton from "./ResetButton";
@@ -11,9 +11,9 @@ import { selectSelectedFlashcards } from "./flashcardsSlice";
 
 const FlashcardsPage = () => {
 	const flashcardsStatus = useSelector((state) => state.flashcards.status);
+	const flashcardError = useSelector((state) => state.flashcards.error);
 	const flashcards = useSelector(selectSelectedFlashcards);
 	const counter = useSelector((state) => state.flashcards.counter);
-	const error = useSelector((state) => state.flashcards.error);
 
 	let content;
 
@@ -34,7 +34,7 @@ const FlashcardsPage = () => {
 			</>
 		);
 	} else if (flashcardsStatus === "failed") {
-		content = <Alert severity="error">{error}</Alert>;
+		content = <Alert severity="error">{flashcardError}</Alert>;
 	}
 
 	return <main>{content}</main>;

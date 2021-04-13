@@ -17,37 +17,25 @@ import { incrementCounter, incrementScore } from "./flashcardsSlice";
 
 const useStyles = makeStyles((theme) => ({
 	card: {
-		minWidth: 250,
-		maxWidth: 500,
 		padding: "1rem",
 		margin: "2rem 0",
 	},
-	cardContent: {
-		padding: 0,
-		marginBottom: "2rem",
-	},
 	cardActions: {
 		display: "flex",
-		[theme.breakpoints.down("sm")]: {
-			flexDirection: "column",
-		},
-		[theme.breakpoints.up("md")]: {
+		flexDirection: "column",
+		[theme.breakpoints.up("sm")]: {
 			flexDirection: "row",
 		},
 	},
 	flashcardHeader: {
 		textAlign: "right",
 	},
-	flashcardContent: {
-		display: "inline-flex",
-		flexDirection: "column",
-	},
 	submit: {
 		marginTop: "1rem",
 	},
 }));
 
-export const Flashcard = ({ flashcard }) => {
+const Flashcard = ({ flashcard }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -61,7 +49,7 @@ export const Flashcard = ({ flashcard }) => {
 
 	const handleAnswerChange = (event) => {
 		setAnswer(event.target.value);
-		setError(false);
+		if (error) setError(false);
 	};
 
 	const handleAnswerValidation = () => {
@@ -89,7 +77,7 @@ export const Flashcard = ({ flashcard }) => {
 
 	return (
 		<Card className={classes.card} component="section">
-			<CardContent className={classes.cardContent}>
+			<CardContent style={{ padding: 0 }}>
 				<div className={classes.flashcardHeader}>
 					<IconButton
 						aria-label="open settings"
@@ -102,19 +90,17 @@ export const Flashcard = ({ flashcard }) => {
 						onClose={() => setOpenSettings(false)}
 					/>
 				</div>
-				<div className={classes.flashcardContent}>
-					<Question
-						flashcard={flashcard}
-						questionType={questionType}
-						setQuestionType={setQuestionType}
-					/>
-					<Button
-						className={classes.infoButton}
-						onClick={() => setOpenInfo(true)}
-					>
-						Show More
-					</Button>
-				</div>
+				<Question
+					flashcard={flashcard}
+					questionType={questionType}
+					setQuestionType={setQuestionType}
+				/>
+				<Button
+					className={classes.infoButton}
+					onClick={() => setOpenInfo(true)}
+				>
+					Show More
+				</Button>
 				<InfoModal
 					open={openInfo}
 					onClose={() => setOpenInfo(false)}
@@ -143,3 +129,5 @@ export const Flashcard = ({ flashcard }) => {
 		</Card>
 	);
 };
+
+export default Flashcard;

@@ -8,8 +8,8 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		backgroundColor: theme.palette.background.paper,
 		borderRadius: ".25rem",
-		padding: theme.spacing(2),
-		margin: theme.spacing(4, 0),
+		padding: "1rem",
+		margin: "2rem 0",
 	},
 	title: {
 		fontSize: "1.5rem",
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: "700",
 	},
 	button: {
-		margin: theme.spacing(2, 0),
+		margin: "1rem 0",
 	},
 }));
 
@@ -28,11 +28,16 @@ const HomePage = () => {
 	return (
 		<main>
 			<section className={classes.root}>
-				<Typography className={classes.title} component="h2" color="primary">
+				<Typography
+					className={classes.title}
+					component="h2"
+					color="primary"
+					align="center"
+				>
 					Introduction
 				</Typography>
 				<hr />
-				<Typography gutterBottom>
+				<Typography align="center" gutterBottom>
 					Welcome to Tangoland, aka 単語のランド. The purpose of this app is to
 					test your knowledge on common japanese expressions. To begin, click
 					the Study button now and start your journey through the land of vocab.

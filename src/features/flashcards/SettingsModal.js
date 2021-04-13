@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 		flexDirection: "column",
 		backgroundColor: theme.palette.background.paper,
 		boxShadow: theme.shadows[5],
-		padding: theme.spacing(2),
+		padding: "1rem",
 		position: "absolute",
 		top: "45%",
 		left: "50%",
@@ -41,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexShrink: 0,
 		justifyContent: "flex-end",
-		marginBottom: theme.spacing(1),
+		marginBottom: "1rem",
 	},
 	button: {
-		margin: theme.spacing(1),
+		margin: "0.5rem",
 	},
 }));
 

@@ -13,12 +13,12 @@ const CustomInput = withStyles((theme) => ({
 	},
 }))(InputBase);
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
 	formControl: {
-		marginTop: theme.spacing(2),
+		marginTop: "1rem",
 		minWidth: 120,
 	},
-}));
+});
 
 const SelectMenu = ({ answerType, setAnswerType }) => {
 	const classes = useStyles();

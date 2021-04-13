@@ -4,14 +4,14 @@ import Container from "@material-ui/core/Container";
 import Header from "./Header";
 import Footer from "./Footer";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
 	root: {
 		height: "100vh",
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
 		textAlign: "center",
-		padding: theme.spacing(3),
+		padding: "1rem",
 	},
 	content: {
 		width: "100%",
@@ -20,21 +20,19 @@ const useStyles = makeStyles((theme) => ({
 	footer: {
 		flexShrink: 0,
 	},
-}));
+});
 
 const Layout = ({ children }) => {
 	const classes = useStyles();
 
 	return (
-		<>
-			<Container className={classes.root} maxWidth="xs">
-				<div className={classes.content}>
-					<Header />
-					{children}
-				</div>
-				<Footer classes={classes} />
-			</Container>
-		</>
+		<Container className={classes.root} maxWidth="xs">
+			<div className={classes.content}>
+				<Header />
+				{children}
+			</div>
+			<Footer classes={classes} />
+		</Container>
 	);
 };
 

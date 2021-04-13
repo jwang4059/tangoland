@@ -12,7 +12,7 @@ import ResetButton from "./ResetButton";
 const useStyles = makeStyles({
 	card: {
 		padding: "1rem",
-		margin: "1rem 0",
+		margin: "2rem 0",
 	},
 	cardHeader: {
 		display: "flex",
@@ -62,6 +62,10 @@ const EndCard = ({ total }) => {
 					>
 						<SettingsIcon />
 					</IconButton>
+					<SettingsModal
+						open={openSettings}
+						onClose={() => setOpenSettings(false)}
+					/>
 				</div>
 				<hr />
 				<div className={classes.scoreboard}>
@@ -89,10 +93,6 @@ const EndCard = ({ total }) => {
 					Click the RESET button below to continue studying.
 				</Typography>
 				<ResetButton />
-				<SettingsModal
-					open={openSettings}
-					onClose={() => setOpenSettings(false)}
-				/>
 			</CardContent>
 		</Card>
 	);
