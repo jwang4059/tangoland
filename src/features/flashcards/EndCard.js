@@ -1,66 +1,101 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import SettingsIcon from "@material-ui/icons/Settings";
+import SettingsModal from "./SettingsModal";
+import ResetButton from "./ResetButton";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
 	card: {
-		height: 280,
-		padding: theme.spacing(2),
-		margin: theme.spacing(4, 0),
+		padding: "1rem",
+		margin: "1rem 0",
 	},
-	cardContent: {
+	cardHeader: {
 		display: "flex",
-		flexDirection: "column",
-		padding: 0,
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	title: {
+		flex: "1 0 auto",
 		fontSize: "2.25rem",
 		fontWeight: 700,
-		borderBottom: "3px solid #3f51b5",
+		position: "relative",
+		left: 24,
 	},
 	scoreboard: {
-		margin: theme.spacing(6, 0),
+		margin: "1rem",
 	},
 	subtitle: {
 		fontSize: "1.5rem",
 		fontWeight: 500,
 	},
 	score: {
-		fontSize: "1.25",
+		fontSize: "1.25rem",
 	},
-}));
+});
 
-export const EndCard = ({ total }) => {
+const EndCard = ({ total }) => {
 	const classes = useStyles();
 	const numCorrect = useSelector((state) => state.flashcards.score);
+	const [openSettings, setOpenSettings] = useState(false);
 
 	return (
 		<Card className={classes.card}>
-			<CardContent className={classes.cardContent}>
-				<Typography
-					className={classes.title}
-					component="h2"
-					color="primary"
-					align="center"
-				>
-					DONE
-				</Typography>
+			<CardContent style={{ padding: 0 }}>
+				<div className={classes.cardHeader}>
+					<Typography
+						className={classes.title}
+						component="h2"
+						color="primary"
+						display="inline"
+						align="center"
+					>
+						DONE
+					</Typography>
+					<IconButton
+						aria-label="open settings"
+						onClick={() => setOpenSettings(true)}
+					>
+						<SettingsIcon />
+					</IconButton>
+				</div>
+				<hr />
 				<div className={classes.scoreboard}>
-					<Typography className={classes.subtitle} align="center">
+					<Typography
+						className={classes.subtitle}
+						component="span"
+						display="block"
+						align="center"
+					>
 						SCORE
 					</Typography>
 					<Typography
 						className={classes.score}
+						component="span"
+						display="block"
 						align="center"
 					>{`${numCorrect} / ${total}`}</Typography>
 				</div>
-				<Typography color="textSecondary" variant="caption" align="center">
+				<Typography
+					color="textSecondary"
+					variant="caption"
+					display="block"
+					align="center"
+				>
 					Click the RESET button below to continue studying.
 				</Typography>
+				<ResetButton />
+				<SettingsModal
+					open={openSettings}
+					onClose={() => setOpenSettings(false)}
+				/>
 			</CardContent>
 		</Card>
 	);
 };
+
+export default EndCard;

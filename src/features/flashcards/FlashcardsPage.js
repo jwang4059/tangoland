@@ -4,7 +4,7 @@ import Alert from "@material-ui/lab/Alert";
 
 import Loading from "../../components/Loading";
 import { Flashcard } from "./Flashcard";
-import { EndCard } from "./EndCard";
+import EndCard from "./EndCard";
 import Score from "./Score";
 import ResetButton from "./ResetButton";
 import { selectSelectedFlashcards } from "./flashcardsSlice";
@@ -26,12 +26,11 @@ const FlashcardsPage = () => {
 					<>
 						<Flashcard flashcard={flashcards[counter]} />
 						<Score />
+						<ResetButton />
 					</>
 				) : (
 					<EndCard total={flashcards.length} />
 				)}
-
-				<ResetButton />
 			</>
 		);
 	} else if (flashcardsStatus === "failed") {
