@@ -2,16 +2,20 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import Snackbar from "@material-ui/core/Snackbar";
 import Typography from "@material-ui/core/Typography";
 
 import FlashcardsTable from "./FlashcardsTable";
+
 import {
 	selectAllFlashcardIds,
 	selectAllFlashcards,
 	selectSelectedIds,
-	updateSelected,
+	selectIsRandom,
+	updateSettings,
 	reset,
 } from "./flashcardsSlice";
 
@@ -54,28 +58,42 @@ const SettingsModal = ({ open, onClose }) => {
 	const flashcardIds = useSelector(selectAllFlashcardIds);
 	const rows = useSelector(selectAllFlashcards);
 	const selectedIds = useSelector(selectSelectedIds);
+	const isRandom = useSelector(selectIsRandom);
 
+	const [settings, setSettings] = React.useState({
+		selected: new Set(),
+		isRandom: false,
+	});
 	const [openToast, setOpenToast] = React.useState(false);
-	const [selected, setSelected] = React.useState(new Set());
 
 	useEffect(() => {
 		const newSelecteds = new Set();
 		selectedIds.forEach((id) => {
 			newSelecteds.add(id);
 		});
-		setSelected(newSelecteds);
+		setSettings({ selected: newSelecteds, isRandom });
 	}, []);
 
+	const handleIsRandom = (event) => {
+		setSettings({ ...settings, isRandom: event.target.checked });
+	};
+
 	const hasChanged = () => {
-		if (selectedIds.length !== selected.size) return true;
+		if (
+			isRandom !== settings.isRandom ||
+			selectedIds.length !== settings.selected.size
+		)
+			return true;
 		for (let id of selectedIds) {
-			if (!selected.has(id)) return true;
+			if (!settings.selected.has(id)) return true;
 		}
 		return false;
 	};
 
-	const updateSettings = () => {
-		dispatch(updateSelected(Array.from(selected)));
+	const update = () => {
+		dispatch(
+			updateSettings({ ...settings, selected: Array.from(settings.selected) })
+		);
 		dispatch(reset());
 		setOpenToast(true);
 		onClose();
@@ -100,10 +118,21 @@ const SettingsModal = ({ open, onClose }) => {
 						<FlashcardsTable
 							flashcardIds={flashcardIds}
 							rows={rows}
-							selected={selected}
-							setSelected={setSelected}
+							settings={settings}
+							setSettings={setSettings}
 						/>
 					</div>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={settings.isRandom}
+								onChange={handleIsRandom}
+								name="random"
+								color="primary"
+							/>
+						}
+						label="Random Order"
+					/>
 					<div className={classes.modalFooter}>
 						<Button
 							className={classes.button}
@@ -111,7 +140,7 @@ const SettingsModal = ({ open, onClose }) => {
 							color="primary"
 							size="small"
 							disabled={!hasChanged()}
-							onClick={updateSettings}
+							onClick={update}
 						>
 							Update
 						</Button>

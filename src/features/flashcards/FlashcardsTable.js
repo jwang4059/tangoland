@@ -77,7 +77,7 @@ TableToolbar.propTypes = {
 	rowCount: PropTypes.number.isRequired,
 };
 
-const FlashcardsTable = ({ flashcardIds, rows, selected, setSelected }) => {
+const FlashcardsTable = ({ flashcardIds, rows, settings, setSettings }) => {
 	const classes = useStyles();
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -90,11 +90,11 @@ const FlashcardsTable = ({ flashcardIds, rows, selected, setSelected }) => {
 				newSelecteds.add(id);
 			});
 		}
-		setSelected(newSelecteds);
+		setSettings({ ...settings, selected: newSelecteds });
 	};
 
 	const handleClick = (id) => {
-		let newSelected = new Set(selected);
+		let newSelected = new Set(settings.selected);
 
 		if (newSelected.has(id)) {
 			newSelected.delete(id);
@@ -102,7 +102,7 @@ const FlashcardsTable = ({ flashcardIds, rows, selected, setSelected }) => {
 			newSelected.add(id);
 		}
 
-		setSelected(newSelected);
+		setSettings({ ...settings, selected: newSelected });
 	};
 
 	const handleChangePage = (event, newPage) => {
@@ -114,7 +114,7 @@ const FlashcardsTable = ({ flashcardIds, rows, selected, setSelected }) => {
 		setPage(0);
 	};
 
-	const isSelected = (id) => selected.has(id);
+	const isSelected = (id) => settings.selected.has(id);
 
 	const emptyRows =
 		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -124,7 +124,7 @@ const FlashcardsTable = ({ flashcardIds, rows, selected, setSelected }) => {
 			<Paper className={classes.paper}>
 				<TableToolbar
 					classes={classes}
-					numSelected={selected.size}
+					numSelected={settings.selected.size}
 					rowCount={rows.length}
 				/>
 				<TableContainer className={classes.container} component={Paper}>
@@ -134,9 +134,12 @@ const FlashcardsTable = ({ flashcardIds, rows, selected, setSelected }) => {
 								<TableCell padding="checkbox">
 									<Checkbox
 										indeterminate={
-											selected.size > 0 && selected.size < rows.length
+											settings.selected.size > 0 &&
+											settings.selected.size < rows.length
 										}
-										checked={rows.length > 0 && selected.size === rows.length}
+										checked={
+											rows.length > 0 && settings.selected.size === rows.length
+										}
 										onChange={handleSelectAllClick}
 										inputProps={{ "aria-label": "select all flashcards" }}
 									/>

@@ -5,6 +5,23 @@ import {
 	createEntityAdapter,
 } from "@reduxjs/toolkit";
 
+const shuffle = (array) => {
+	var currentIndex = array.length,
+		temporaryValue,
+		randomIndex;
+
+	while (0 !== currentIndex) {
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+
+	return array;
+};
+
 const flashcardsAdapter = createEntityAdapter({
 	selectId: (flashcard) => flashcard._id,
 });
@@ -13,6 +30,7 @@ const initialState = flashcardsAdapter.getInitialState({
 	selectedIds: [],
 	counter: 0,
 	score: 0,
+	isRandom: false,
 	status: "idle",
 	error: null,
 });
@@ -43,8 +61,9 @@ const flashcardsSlice = createSlice({
 			state.counter = 0;
 			state.score = 0;
 		},
-		updateSelected: (state, action) => {
-			state.selectedIds = action.payload;
+		updateSettings: (state, action) => {
+			state.selectedIds = action.payload.selected;
+			state.isRandom = action.payload.isRandom;
 		},
 	},
 	extraReducers: {
@@ -69,7 +88,7 @@ export const {
 	incrementCounter,
 	incrementScore,
 	reset,
-	updateSelected,
+	updateSettings,
 } = flashcardsSlice.actions;
 
 export const {
@@ -78,9 +97,16 @@ export const {
 } = flashcardsAdapter.getSelectors((state) => state.flashcards);
 
 export const selectSelectedIds = (state) => state.flashcards.selectedIds;
+export const selectIsRandom = (state) => state.flashcards.isRandom;
 
 export const selectSelectedFlashcards = createSelector(
-	[selectAllFlashcards, selectSelectedIds],
-	(flashcards, selectedIds) =>
-		flashcards.filter((flashcard) => selectedIds.includes(flashcard._id))
+	[selectAllFlashcards, selectSelectedIds, selectIsRandom],
+	(flashcards, selectedIds, isRandom) => {
+		let selectedFlashcards = flashcards.filter((flashcard) =>
+			selectedIds.includes(flashcard._id)
+		);
+		if (isRandom) selectedFlashcards = shuffle(selectedFlashcards);
+
+		return selectedFlashcards;
+	}
 );
