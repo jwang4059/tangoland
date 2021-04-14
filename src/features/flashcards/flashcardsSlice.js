@@ -5,7 +5,16 @@ import {
 	createEntityAdapter,
 } from "@reduxjs/toolkit";
 
-export const shuffle = (array, start, end) => {
+const compareIndex = (array) => (a, b) => {
+	return array.indexOf(a) - array.indexOf(b);
+};
+
+export const flashcardsSort = (array, sortByArray) => {
+	array.sort(compareIndex(sortByArray));
+	return array;
+};
+
+export const flashcardsShuffle = (array, start, end) => {
 	var currentIndex = end,
 		temporaryValue,
 		randomIndex;
@@ -66,11 +75,21 @@ const flashcardsSlice = createSlice({
 			}
 		},
 		reset: (state) => {
+			if (state.isRandom) {
+				state.selectedIds = flashcardsShuffle(
+					state.selectedIds,
+					0,
+					state.selectedIds.length
+				);
+			} else {
+				state.selectedIds = flashcardsSort(state.selectedIds, state.ids);
+			}
+
 			state.counter = 0;
 			state.score = 0;
 		},
 		updateSettings: (state, action) => {
-			state.selectedIds = action.payload.selected;
+			state.selectedIds = action.payload.selectedIds;
 			state.isRandom = action.payload.isRandom;
 		},
 	},
