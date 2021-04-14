@@ -5,13 +5,13 @@ import {
 	createEntityAdapter,
 } from "@reduxjs/toolkit";
 
-const shuffle = (array) => {
-	var currentIndex = array.length,
+export const shuffle = (array, start, end) => {
+	var currentIndex = end,
 		temporaryValue,
 		randomIndex;
 
-	while (0 !== currentIndex) {
-		randomIndex = Math.floor(Math.random() * currentIndex);
+	while (currentIndex !== start) {
+		randomIndex = Math.floor(Math.random() * (currentIndex + start) + start);
 		currentIndex -= 1;
 
 		temporaryValue = array[currentIndex];
@@ -94,19 +94,13 @@ export const {
 export const {
 	selectIds: selectAllFlashcardIds,
 	selectAll: selectAllFlashcards,
+	selectEntities: selectFlashcardsMap,
 } = flashcardsAdapter.getSelectors((state) => state.flashcards);
 
 export const selectSelectedIds = (state) => state.flashcards.selectedIds;
 export const selectIsRandom = (state) => state.flashcards.isRandom;
 
 export const selectSelectedFlashcards = createSelector(
-	[selectAllFlashcards, selectSelectedIds, selectIsRandom],
-	(flashcards, selectedIds, isRandom) => {
-		let selectedFlashcards = flashcards.filter((flashcard) =>
-			selectedIds.includes(flashcard._id)
-		);
-		if (isRandom) selectedFlashcards = shuffle(selectedFlashcards);
-
-		return selectedFlashcards;
-	}
+	[selectFlashcardsMap, selectSelectedIds],
+	(flashcardsMap, selectedIds) => selectedIds.map((id) => flashcardsMap[id])
 );

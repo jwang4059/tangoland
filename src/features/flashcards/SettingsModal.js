@@ -17,6 +17,7 @@ import {
 	selectIsRandom,
 	updateSettings,
 	reset,
+	shuffle,
 } from "./flashcardsSlice";
 
 const useStyles = makeStyles((theme) => ({
@@ -90,10 +91,20 @@ const SettingsModal = ({ open, onClose }) => {
 		return false;
 	};
 
-	const update = () => {
-		dispatch(
-			updateSettings({ ...settings, selected: Array.from(settings.selected) })
-		);
+	const compareIndex = (a, b) => {
+		return selectedIds.indexOf(a) - selectedIds.indexOf(b);
+	};
+
+	const handleUpdate = () => {
+		let selectedArray = Array.from(settings.selected);
+
+		if (settings.isRandom) {
+			selectedArray = shuffle(selectedArray, 0, selectedArray.length);
+		} else {
+			selectedArray.sort(compareIndex);
+		}
+
+		dispatch(updateSettings({ ...settings, selected: selectedArray }));
 		dispatch(reset());
 		setOpenToast(true);
 		onClose();
@@ -140,7 +151,7 @@ const SettingsModal = ({ open, onClose }) => {
 							color="primary"
 							size="small"
 							disabled={!hasChanged()}
-							onClick={update}
+							onClick={handleUpdate}
 						>
 							Update
 						</Button>
