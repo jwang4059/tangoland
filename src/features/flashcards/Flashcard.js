@@ -13,7 +13,11 @@ import Question from "./Question";
 import InfoModal from "./InfoModal";
 import SettingsModal from "./SettingsModal";
 import SelectMenu from "./SelectMenu";
-import { incrementCounter, incrementScore } from "./flashcardsSlice";
+import {
+	incrementCounter,
+	incrementScore,
+	incremenentMistake,
+} from "./flashcardsSlice";
 
 const useStyles = makeStyles((theme) => ({
 	card: {
@@ -23,8 +27,10 @@ const useStyles = makeStyles((theme) => ({
 	cardActions: {
 		display: "flex",
 		flexDirection: "column",
+		marginTop: "1rem",
 		[theme.breakpoints.up("sm")]: {
 			flexDirection: "row",
+			alignItems: "flex-end",
 		},
 	},
 	flashcardHeader: {
@@ -45,25 +51,32 @@ const Flashcard = ({ flashcard }) => {
 	const [answerType, setAnswerType] = useState("romaji");
 	const [answer, setAnswer] = useState("");
 	const [error, setError] = useState(false);
-	const [mistake, setMistake] = useState(false);
+	const [failed, setFailed] = useState(false);
 
 	const handleAnswerChange = (event) => {
 		setAnswer(event.target.value);
 		if (error) setError(false);
 	};
 
+	const isCorrect = () => {
+		if (answerType === "expression") {
+			return flashcard[answerType] === answer;
+		} else {
+			return flashcard[answerType].includes(answer);
+		}
+	};
+
 	const handleAnswerValidation = () => {
-		if (flashcard[answerType].includes(answer)) {
-			if (!mistake) {
-				dispatch(incrementScore());
-			} else {
-				setMistake(false);
-			}
-			setError(false);
+		if (isCorrect()) {
+			if (!failed) dispatch(incrementScore());
+
 			dispatch(incrementCounter());
+			if (failed) setFailed(false);
+			if (error) setError(false);
 			setAnswer("");
 		} else {
-			setMistake(true);
+			dispatch(incremenentMistake(flashcard._id));
+			setFailed(true);
 			setError(true);
 		}
 	};
@@ -114,6 +127,7 @@ const Flashcard = ({ flashcard }) => {
 					label="Answer"
 					value={answer}
 					error={error}
+					autoFocus={true}
 					fullWidth
 					onChange={handleAnswerChange}
 					onKeyPress={onEnterKey}

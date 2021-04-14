@@ -15,7 +15,6 @@ const CustomInput = withStyles((theme) => ({
 
 const useStyles = makeStyles({
 	formControl: {
-		marginTop: "1rem",
 		minWidth: 120,
 	},
 });

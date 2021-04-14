@@ -28,6 +28,7 @@ const flashcardsAdapter = createEntityAdapter({
 
 const initialState = flashcardsAdapter.getInitialState({
 	selectedIds: [],
+	mistakes: {},
 	counter: 0,
 	score: 0,
 	isRandom: false,
@@ -56,6 +57,13 @@ const flashcardsSlice = createSlice({
 		},
 		incrementScore: (state) => {
 			state.score += 1;
+		},
+		incremenentMistake: (state, action) => {
+			if (state.mistakes.hasOwnProperty(action.payload)) {
+				state.mistakes[action.payload] += 1;
+			} else {
+				state.mistakes[action.payload] = 1;
+			}
 		},
 		reset: (state) => {
 			state.counter = 0;
@@ -87,6 +95,7 @@ export default flashcardsSlice.reducer;
 export const {
 	incrementCounter,
 	incrementScore,
+	incremenentMistake,
 	reset,
 	updateSettings,
 } = flashcardsSlice.actions;
@@ -98,6 +107,7 @@ export const {
 } = flashcardsAdapter.getSelectors((state) => state.flashcards);
 
 export const selectSelectedIds = (state) => state.flashcards.selectedIds;
+export const selectMistakes = (state) => state.flashcards.mistakes;
 export const selectIsRandom = (state) => state.flashcards.isRandom;
 
 export const selectSelectedFlashcards = createSelector(
