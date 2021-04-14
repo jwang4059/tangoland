@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -17,6 +17,7 @@ import {
 	incrementCounter,
 	incrementScore,
 	incremenentMistake,
+	selectMistakes,
 } from "./flashcardsSlice";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
 const Flashcard = ({ flashcard }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
+	const mistakes = useSelector(selectMistakes);
 
 	const [openInfo, setOpenInfo] = useState(false);
 	const [openSettings, setOpenSettings] = useState(false);
@@ -68,7 +70,9 @@ const Flashcard = ({ flashcard }) => {
 
 	const handleAnswerValidation = () => {
 		if (isCorrect()) {
-			if (!failed) dispatch(incrementScore());
+			if (!mistakes.hasOwnProperty(flashcard._id)) {
+				dispatch(incrementScore());
+			}
 
 			dispatch(incrementCounter());
 			if (failed) setFailed(false);
