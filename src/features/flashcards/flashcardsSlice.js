@@ -38,8 +38,11 @@ const flashcardsAdapter = createEntityAdapter({
 const initialState = flashcardsAdapter.getInitialState({
 	selectedIds: [],
 	mistakes: {},
-	counter: 0,
-	score: 0,
+	counters: {
+		index: 0,
+		correct: 0,
+		wrong: 0,
+	},
 	isRandom: false,
 	status: "idle",
 	error: null,
@@ -61,11 +64,8 @@ const flashcardsSlice = createSlice({
 	name: "flashcards",
 	initialState,
 	reducers: {
-		incrementCounter: (state) => {
-			state.counter += 1;
-		},
-		incrementScore: (state) => {
-			state.score += 1;
+		incrementCounter: (state, action) => {
+			state.counters[action.payload] += 1;
 		},
 		incremenentMistake: (state, action) => {
 			if (state.mistakes.hasOwnProperty(action.payload)) {
@@ -85,7 +85,7 @@ const flashcardsSlice = createSlice({
 				state.selectedIds = flashcardsSort(state.selectedIds, state.ids);
 			}
 
-			state.counter = 0;
+			state.index = 0;
 			state.score = 0;
 		},
 		updateSettings: (state, action) => {
@@ -113,7 +113,6 @@ export default flashcardsSlice.reducer;
 
 export const {
 	incrementCounter,
-	incrementScore,
 	incremenentMistake,
 	reset,
 	updateSettings,

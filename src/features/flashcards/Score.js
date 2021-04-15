@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
+import { selectMistakes } from "./flashcardsSlice";
+
 const useStyles = makeStyles({
 	score: {
 		display: "block",
@@ -12,15 +14,16 @@ const useStyles = makeStyles({
 
 const Score = () => {
 	const classes = useStyles();
-	const numCorrect = useSelector((state) => state.flashcards.score);
-	const total = useSelector((state) => state.flashcards.counter);
+	const correct = useSelector((state) => state.flashcards.counters.correct);
+	const mistakes = useSelector(selectMistakes);
+	const total = correct + Object.keys(mistakes).length;
 
 	return (
 		<Typography
 			className={classes.score}
 			component="span"
 			color="textSecondary"
-		>{`${numCorrect} / ${total}`}</Typography>
+		>{`${correct} / ${total}`}</Typography>
 	);
 };
 

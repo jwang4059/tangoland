@@ -13,7 +13,7 @@ const FlashcardsPage = () => {
 	const flashcardsStatus = useSelector((state) => state.flashcards.status);
 	const flashcardError = useSelector((state) => state.flashcards.error);
 	const flashcards = useSelector(selectSelectedFlashcards);
-	const counter = useSelector((state) => state.flashcards.counter);
+	const index = useSelector((state) => state.flashcards.counters.index);
 
 	let content;
 
@@ -22,9 +22,9 @@ const FlashcardsPage = () => {
 	} else if (flashcardsStatus === "succeeded") {
 		content = (
 			<>
-				{counter < flashcards.length ? (
+				{index < flashcards.length ? (
 					<>
-						<Flashcard flashcard={flashcards[counter]} />
+						<Flashcard flashcard={flashcards[index]} />
 						<Score />
 						<ResetButton />
 					</>

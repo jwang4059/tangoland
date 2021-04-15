@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -15,7 +15,6 @@ import SettingsModal from "./SettingsModal";
 import SelectMenu from "./SelectMenu";
 import {
 	incrementCounter,
-	incrementScore,
 	incremenentMistake,
 	selectMistakes,
 } from "./flashcardsSlice";
@@ -68,15 +67,20 @@ const Flashcard = ({ flashcard }) => {
 		}
 	};
 
-	const handleAnswerValidation = () => {
-		if (isCorrect()) {
-			if (!mistakes.hasOwnProperty(flashcard._id)) {
-				dispatch(incrementScore());
-			}
+	const isMistake = () => {
+		return mistakes.hasOwnProperty(flashcard._id);
+	};
 
-			dispatch(incrementCounter());
-			if (failed) setFailed(false);
-			if (error) setError(false);
+	const handleAnswerValidation = async () => {
+		if (isCorrect()) {
+			if (!isMistake()) dispatch(incrementCounter("correct"));
+			//if repeatMistake
+			//shuffle mistake
+			// if (!failed) dispatch(incrementCounter("index"));
+			//else disaptch(incrmentCounter("index"))
+			dispatch(incrementCounter("index"));
+			setFailed(false);
+			setError(false);
 			setAnswer("");
 		} else {
 			dispatch(incremenentMistake(flashcard._id));
