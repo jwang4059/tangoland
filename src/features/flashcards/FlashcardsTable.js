@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
 		marginBottom: theme.spacing(2),
 	},
 	toolbar: {
-		paddingLeft: theme.spacing(2),
-		paddingRight: theme.spacing(1),
+		minHeight: "3rem",
+		padding: "0 1rem",
 	},
 	highlight:
 		theme.palette.type === "light"
@@ -120,93 +120,92 @@ const FlashcardsTable = ({ flashcardIds, rows, settings, setSettings }) => {
 		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
 	return (
-		<div className={classes.container}>
-			<Paper className={classes.paper}>
-				<TableToolbar
-					classes={classes}
-					numSelected={settings.selected.size}
-					rowCount={rows.length}
-				/>
-				<TableContainer className={classes.container} component={Paper}>
-					<Table stickyHeader size="small" aria-label="flashcards table">
-						<TableHead>
-							<TableRow>
-								<TableCell padding="checkbox">
-									<Checkbox
-										indeterminate={
-											settings.selected.size > 0 &&
-											settings.selected.size < rows.length
-										}
-										checked={
-											rows.length > 0 && settings.selected.size === rows.length
-										}
-										onChange={handleSelectAllClick}
-										inputProps={{ "aria-label": "select all flashcards" }}
-									/>
-								</TableCell>
-								<TableCell align="left">Expression</TableCell>
-								<TableCell align="center">Kana</TableCell>
-								<TableCell align="center">Romaji</TableCell>
-								<TableCell align="center">Meaning</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{rows
-								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map((row, index) => {
-									const realIndex = page * rowsPerPage + index;
-									const isItemSelected = isSelected(row._id);
-									const labelId = `flashcards-table-checkbox-${realIndex}`;
+		<Paper className={classes.paper}>
+			<TableToolbar
+				classes={classes}
+				numSelected={settings.selected.size}
+				rowCount={rows.length}
+			/>
+			<TableContainer className={classes.container} component={Paper}>
+				<Table stickyHeader size="small" aria-label="flashcards table">
+					<TableHead>
+						<TableRow>
+							<TableCell padding="checkbox">
+								<Checkbox
+									indeterminate={
+										settings.selected.size > 0 &&
+										settings.selected.size < rows.length
+									}
+									checked={
+										rows.length > 0 && settings.selected.size === rows.length
+									}
+									onChange={handleSelectAllClick}
+									inputProps={{ "aria-label": "select all flashcards" }}
+								/>
+							</TableCell>
+							<TableCell align="left">Expression</TableCell>
+							<TableCell align="center">Kana</TableCell>
+							<TableCell align="center">Romaji</TableCell>
+							<TableCell align="center">Meaning</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{rows
+							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+							.map((row, index) => {
+								const realIndex = page * rowsPerPage + index;
+								const isItemSelected = isSelected(row._id);
+								const labelId = `flashcards-table-checkbox-${realIndex}`;
 
-									return (
-										<TableRow
-											hover
-											onClick={() => handleClick(row._id)}
-											role="checkbox"
-											aria-checked={isItemSelected}
-											tabIndex={-1}
-											key={row._id}
-											selected={isItemSelected}
+								return (
+									<TableRow
+										hover
+										onClick={() => handleClick(row._id)}
+										role="checkbox"
+										aria-checked={isItemSelected}
+										tabIndex={-1}
+										key={row._id}
+										selected={isItemSelected}
+									>
+										<TableCell padding="checkbox">
+											<Checkbox
+												checked={isItemSelected}
+												inputProps={{ "aria-labelledby": labelId }}
+											/>
+										</TableCell>
+										<TableCell
+											component="th"
+											id={labelId}
+											scope="row"
+											padding="none"
 										>
-											<TableCell padding="checkbox">
-												<Checkbox
-													checked={isItemSelected}
-													inputProps={{ "aria-labelledby": labelId }}
-												/>
-											</TableCell>
-											<TableCell
-												component="th"
-												id={labelId}
-												scope="row"
-												padding="none"
-											>
-												{row.expression}
-											</TableCell>
-											<TableCell align="center">{row.kana}</TableCell>
-											<TableCell align="center">{row.romaji}</TableCell>
-											<TableCell align="center">{row.meaning}</TableCell>
-										</TableRow>
-									);
-								})}
-							{emptyRows > 0 && (
-								<TableRow style={{ height: 33 * emptyRows }}>
-									<TableCell colSpan={6} />
-								</TableRow>
-							)}
-						</TableBody>
-					</Table>
-				</TableContainer>
-				<TablePagination
-					rowsPerPageOptions={[5, 10, 25, { value: -1, label: "All" }]}
-					component="div"
-					count={rows.length}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					onChangePage={handleChangePage}
-					onChangeRowsPerPage={handleChangeRowsPerPage}
-				/>
-			</Paper>
-		</div>
+											{row.expression}
+										</TableCell>
+										<TableCell align="center">{row.kana}</TableCell>
+										<TableCell align="center">{row.romaji}</TableCell>
+										<TableCell align="center">{row.meaning}</TableCell>
+									</TableRow>
+								);
+							})}
+						{emptyRows > 0 && (
+							<TableRow style={{ height: 33 * emptyRows }}>
+								<TableCell colSpan={6} />
+							</TableRow>
+						)}
+					</TableBody>
+				</Table>
+			</TableContainer>
+			<TablePagination
+				className={classes.toolbar}
+				rowsPerPageOptions={[5, 10, 25, { value: -1, label: "All" }]}
+				component="div"
+				count={rows.length}
+				rowsPerPage={rowsPerPage}
+				page={page}
+				onChangePage={handleChangePage}
+				onChangeRowsPerPage={handleChangeRowsPerPage}
+			/>
+		</Paper>
 	);
 };
 

@@ -44,6 +44,7 @@ const initialState = flashcardsAdapter.getInitialState({
 		wrong: 0,
 	},
 	isRandom: false,
+	isRepeat: false,
 	status: "idle",
 	error: null,
 });
@@ -89,8 +90,9 @@ const flashcardsSlice = createSlice({
 			state.score = 0;
 		},
 		updateSettings: (state, action) => {
-			state.selectedIds = action.payload.selectedIds;
+			state.selectedIds = action.payload.selected;
 			state.isRandom = action.payload.isRandom;
+			state.isRepeat = action.payload.isRepeat;
 		},
 	},
 	extraReducers: {
@@ -127,6 +129,7 @@ export const {
 export const selectSelectedIds = (state) => state.flashcards.selectedIds;
 export const selectMistakes = (state) => state.flashcards.mistakes;
 export const selectIsRandom = (state) => state.flashcards.isRandom;
+export const selectIsRepeat = (state) => state.flashcards.isRepeat;
 
 export const selectSelectedFlashcards = createSelector(
 	[selectFlashcardsMap, selectSelectedIds],
