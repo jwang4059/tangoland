@@ -16,7 +16,9 @@ import SelectMenu from "./SelectMenu";
 import {
 	incrementCounter,
 	incremenentMistake,
+	repositionMistake,
 	selectMistakes,
+	selectIsRepeat,
 } from "./flashcardsSlice";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +47,7 @@ const Flashcard = ({ flashcard }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const mistakes = useSelector(selectMistakes);
+	const isRepeat = useSelector(selectIsRepeat);
 
 	const [openInfo, setOpenInfo] = useState(false);
 	const [openSettings, setOpenSettings] = useState(false);
@@ -74,11 +77,15 @@ const Flashcard = ({ flashcard }) => {
 	const handleAnswerValidation = async () => {
 		if (isCorrect()) {
 			if (!isMistake()) dispatch(incrementCounter("correct"));
-			//if repeatMistake
-			//shuffle mistake
-			// if (!failed) dispatch(incrementCounter("index"));
-			//else disaptch(incrmentCounter("index"))
-			dispatch(incrementCounter("index"));
+			if (isRepeat) {
+				if (failed) {
+					dispatch(repositionMistake());
+				} else {
+					dispatch(incrementCounter("index"));
+				}
+			} else {
+				dispatch(incrementCounter("index"));
+			}
 			setFailed(false);
 			setError(false);
 			setAnswer("");

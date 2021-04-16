@@ -40,7 +40,7 @@ const useStyles = makeStyles({
 
 const EndCard = ({ total }) => {
 	const classes = useStyles();
-	const numCorrect = useSelector((state) => state.flashcards.score);
+	const numCorrect = useSelector((state) => state.flashcards.counters.correct);
 	const [openSettings, setOpenSettings] = useState(false);
 
 	return (

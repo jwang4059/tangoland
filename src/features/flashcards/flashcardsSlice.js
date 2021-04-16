@@ -20,7 +20,7 @@ export const flashcardsShuffle = (array, start, end) => {
 		randomIndex;
 
 	while (currentIndex !== start) {
-		randomIndex = Math.floor(Math.random() * (currentIndex + start) + start);
+		randomIndex = Math.floor(Math.random() * (currentIndex - start) + start);
 		currentIndex -= 1;
 
 		temporaryValue = array[currentIndex];
@@ -75,6 +75,15 @@ const flashcardsSlice = createSlice({
 				state.mistakes[action.payload] = 1;
 			}
 		},
+		repositionMistake: (state) => {
+			const currentIndex = state.counters.index;
+			const temp = state.selectedIds[state.counters.index];
+			state.selectedIds.splice(currentIndex, 1);
+			const randomIndex = Math.floor(
+				Math.random() * (state.selectedIds.length - currentIndex) + currentIndex
+			);
+			state.selectedIds.splice(randomIndex, 0, temp);
+		},
 		reset: (state) => {
 			if (state.isRandom) {
 				state.selectedIds = flashcardsShuffle(
@@ -86,8 +95,10 @@ const flashcardsSlice = createSlice({
 				state.selectedIds = flashcardsSort(state.selectedIds, state.ids);
 			}
 
-			state.index = 0;
-			state.score = 0;
+			state.mistakes = {};
+
+			state.counters.index = 0;
+			state.counters.correct = 0;
 		},
 		updateSettings: (state, action) => {
 			state.selectedIds = action.payload.selected;
@@ -116,6 +127,7 @@ export default flashcardsSlice.reducer;
 export const {
 	incrementCounter,
 	incremenentMistake,
+	repositionMistake,
 	reset,
 	updateSettings,
 } = flashcardsSlice.actions;

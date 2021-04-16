@@ -150,7 +150,7 @@ const SettingsModal = ({ open, onClose }) => {
 									color="primary"
 								/>
 							}
-							label="Repeat Mistakes"
+							label="Repeat Problem Words"
 						/>
 					</div>
 					<div className={classes.modalFooter}>
