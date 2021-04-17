@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -50,6 +50,9 @@ const HomePage = () => {
 				>
 					Study
 				</Button>
+				<Typography variant="caption" component="span" display="block">
+					For more help, visit <Link to="/resources">resources</Link>
+				</Typography>
 			</section>
 		</main>
 	);
