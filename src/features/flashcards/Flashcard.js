@@ -123,12 +123,7 @@ const Flashcard = ({ flashcard }) => {
 					questionType={questionType}
 					setQuestionType={setQuestionType}
 				/>
-				<Button
-					className={classes.infoButton}
-					onClick={() => setOpenInfo(true)}
-				>
-					Show More
-				</Button>
+				<Button onClick={() => setOpenInfo(true)}>Show More</Button>
 				<InfoModal
 					open={openInfo}
 					onClose={() => setOpenInfo(false)}
