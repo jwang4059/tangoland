@@ -4,6 +4,7 @@
 // learn more: https://github.com/testing-library/jest-dom
 import { rest } from "msw";
 import { setupServer } from "msw/node";
+import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 
 const server = setupServer(

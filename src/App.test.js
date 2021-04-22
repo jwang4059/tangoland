@@ -1,7 +1,7 @@
 import store from "./app/store";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, useHistory } from "react-router-dom";
-import { render as rtlRender, screen } from "@testing-library/react";
+import { BrowserRouter as Router } from "react-router-dom";
+import { render as rtlRender, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import App from "./App";
@@ -22,16 +22,42 @@ const render = (ui, { route = "/", ...renderOptions } = {}) => {
 	return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
 };
 
-test("renders homepage", () => {
-	render(<HomePage />);
+describe("HomePage", () => {
+	test("renders homepage", () => {
+		render(<HomePage />);
 
-	expect(screen.getByRole("heading")).toHaveTextContent("Introduction");
-	expect(screen.getByRole("button")).toBeEnabled();
-	expect(screen.getByRole("link")).toHaveTextContent("resources");
+		expect(screen.getByRole("heading")).toHaveTextContent(/intro/i);
+		expect(screen.getByRole("button")).toBeEnabled();
+		expect(screen.getByRole("link")).toHaveTextContent(/resource/i);
+	});
 });
 
-test("render resources", () => {
-	render(<ResourcesPage />);
+describe("Resources", () => {
+	test("render resources", () => {
+		render(<ResourcesPage />);
 
-	expect(screen.getByText("Resources")).toBeInTheDocument();
+		expect(screen.getByText(/resource/i)).toBeInTheDocument();
+	});
+});
+
+describe("App", () => {
+	test("navigate to study", async () => {
+		render(<App />);
+		expect(screen.getByText(/intro/i)).toBeInTheDocument();
+
+		await userEvent.click(screen.getByRole("button"));
+		await waitFor(() => screen.getByText(/loading.../i));
+
+		expect(screen.getByText(/loading.../i)).toBeInTheDocument();
+	});
+
+	test("navigate to resouces", async () => {
+		render(<App />);
+		expect(screen.getByText(/intro/i)).toBeInTheDocument();
+
+		await userEvent.click(screen.getByRole("link", { name: "resources" }));
+		await waitFor(() => screen.getByText(/resource/i));
+
+		expect(screen.getByText(/resource/i)).toBeInTheDocument();
+	});
 });
