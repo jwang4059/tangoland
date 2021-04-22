@@ -27,7 +27,7 @@ const Header = () => {
 	return (
 		<header className={classes.header}>
 			<Link to="/" className={classes.link}>
-				<Typography className={classes.title} component="h1">
+				<Typography className={classes.title} component="h1" align="center">
 					TangoLand
 				</Typography>
 			</Link>

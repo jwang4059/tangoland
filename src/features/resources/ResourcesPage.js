@@ -7,6 +7,9 @@ import Button from "@material-ui/core/Button";
 const useStyles = makeStyles((theme) => ({
 	root: {
 		backgroundColor: theme.palette.background.paper,
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
 		borderRadius: ".25rem",
 		padding: "1rem",
 		margin: "2rem 0",
@@ -18,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: "1.5rem",
 		lineHeight: "2rem",
 		fontWeight: "700",
+		alignSelf: "stretch",
+		paddingBottom: "0.5rem",
+		borderBottom: "1px solid black",
 	},
 	subheader: {
 		fontWeight: "500",
@@ -46,7 +52,6 @@ const ResourcesPage = () => {
 				>
 					Resources
 				</Typography>
-				<hr />
 				<div className={classes.div}>
 					<Typography className={classes.subheader} component="h3">
 						How to set up Japanese keyboard

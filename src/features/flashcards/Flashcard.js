@@ -26,9 +26,16 @@ const useStyles = makeStyles((theme) => ({
 		padding: "1rem",
 		margin: "2rem 0",
 	},
+	cardContent: {
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+		padding: 0,
+	},
 	cardActions: {
 		display: "flex",
 		flexDirection: "column",
+		alignItems: "center",
 		marginTop: "1rem",
 		[theme.breakpoints.up("sm")]: {
 			flexDirection: "row",
@@ -36,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	flashcardHeader: {
-		textAlign: "right",
+		alignSelf: "flex-end",
 	},
 	submit: {
 		marginTop: "1rem",
@@ -105,7 +112,7 @@ const Flashcard = ({ flashcard }) => {
 
 	return (
 		<Card className={classes.card} component="section">
-			<CardContent style={{ padding: 0 }}>
+			<CardContent className={classes.cardContent}>
 				<div className={classes.flashcardHeader}>
 					<IconButton
 						aria-label="open settings"

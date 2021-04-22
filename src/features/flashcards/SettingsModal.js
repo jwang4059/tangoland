@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 	modalFooter: {
 		display: "flex",
-		flexShrink: 0,
 		justifyContent: "flex-end",
 	},
 	title: {
