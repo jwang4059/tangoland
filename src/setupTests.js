@@ -12,22 +12,18 @@ const server = setupServer(
 		return res(
 			ctx.json([
 				{
-					expression: "一",
-					kana: ["いち"],
-					romaji: ["ichi"],
-					meaning: ["one"],
+					_id: "60090963dc6a9758831787c2",
+					expression: "これ",
+					kana: ["これ"],
+					romaji: ["kore"],
+					meaning: ["this, this one"],
 				},
 				{
-					expression: "二",
-					kana: ["に"],
-					romaji: ["ni"],
-					meaning: ["two"],
-				},
-				{
-					expression: "三",
-					kana: ["さん"],
-					romaji: ["san"],
-					meaning: ["three"],
+					_id: "60090af5dc6a9758831787c3",
+					expression: "一つ",
+					kana: ["ひとつ"],
+					romaji: ["hitotsu"],
+					meaning: ["one (thing)"],
 				},
 			])
 		);

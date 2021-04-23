@@ -7,6 +7,7 @@ import userEvent from "@testing-library/user-event";
 import App from "./App";
 import HomePage from "./features/home/HomePage";
 import ResourcesPage from "./features/resources/ResourcesPage";
+import Flashcard from "./features/flashcards/Flashcard";
 import { fetchFlashcards } from "./features/flashcards/flashcardsSlice";
 
 const render = (ui, { route = "/", ...renderOptions } = {}) => {
@@ -32,11 +33,57 @@ describe("HomePage", () => {
 	});
 });
 
-describe("Resources", () => {
+describe("ResourcesPage", () => {
 	test("render resources", () => {
 		render(<ResourcesPage />);
-
 		expect(screen.getByText(/resource/i)).toBeInTheDocument();
+		expect(screen.getAllByRole("link")).toHaveLength(4);
+		expect(screen.getByRole("button")).toBeEnabled();
+	});
+});
+
+describe("Flashcards", () => {
+	const flashcard = {
+		_id: "60090963dc6a9758831787c2",
+		expression: "これ",
+		kana: ["これ"],
+		romaji: ["kore"],
+		meaning: ["this, this one"],
+	};
+
+	test("render flashcards", async () => {
+		render(<Flashcard flashcard={flashcard} />);
+
+		expect(screen.getByText("これ")).toBeInTheDocument();
+		expect(screen.getByText(/romaji/i)).toBeInTheDocument();
+		expect(screen.getByText(/answer/i)).toBeInTheDocument();
+		expect(screen.getByText(/submit/i)).toBeInTheDocument();
+	});
+
+	test("submit no answer", () => {
+		render(<Flashcard flashcard={flashcard} />);
+
+		expect(screen.getByRole("textbox")).toBeValid();
+		userEvent.click(screen.getByText(/submit/i));
+		expect(screen.getByRole("textbox")).toBeInvalid();
+	});
+
+	test("submit wrong answer", () => {
+		render(<Flashcard flashcard={flashcard} />);
+
+		expect(screen.getByRole("textbox")).toBeValid();
+		userEvent.type(screen.getByRole("textbox"), "wrong answer");
+		userEvent.click(screen.getByText(/submit/i));
+		expect(screen.getByRole("textbox")).toBeInvalid();
+	});
+
+	test("submit right answer", () => {
+		render(<Flashcard flashcard={flashcard} />);
+
+		expect(screen.getByRole("textbox")).toBeValid();
+		userEvent.type(screen.getByRole("textbox"), "これ");
+		userEvent.click(screen.getByText(/submit/i));
+		expect(screen.getByRole("textbox")).toBeInvalid();
 	});
 });
 
