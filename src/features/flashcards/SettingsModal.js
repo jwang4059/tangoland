@@ -71,7 +71,7 @@ const SettingsModal = ({ open, onClose }) => {
 			newSelecteds.add(id);
 		});
 		setSettings({ selected: newSelecteds, isRandom, isRepeat });
-	}, []);
+	}, [selectedIds, isRandom, isRepeat]);
 
 	const handleIsRandom = (event) => {
 		setSettings({ ...settings, isRandom: event.target.checked });
